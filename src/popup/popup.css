@@ -1,0 +1,312 @@
+/* ============================================================
+   Devora — Popup Styles
+   Compact dark-themed popup matching the main dashboard.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg-primary: #06080f;
+  --bg-secondary: #0d1117;
+  --bg-tertiary: #151b28;
+  --bg-glass: rgba(13, 17, 23, 0.9);
+  --bg-input: rgba(13, 17, 23, 0.5);
+  --border-primary: rgba(99, 102, 241, 0.12);
+  --border-secondary: rgba(99, 102, 241, 0.06);
+  --border-hover: rgba(99, 102, 241, 0.25);
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+  --text-muted: #64748b;
+  --accent-primary: #6366f1;
+  --accent-primary-hover: #818cf8;
+  --accent-primary-glow: rgba(99, 102, 241, 0.2);
+  --accent-green: #10b981;
+  --accent-amber: #f59e0b;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="light"] {
+  --bg-primary: #f0f2f5;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e8ecf1;
+  --bg-glass: rgba(255, 255, 255, 0.95);
+  --bg-input: rgba(0, 0, 0, 0.04);
+  --border-primary: rgba(99, 102, 241, 0.15);
+  --border-secondary: rgba(0, 0, 0, 0.06);
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-tertiary: #64748b;
+  --text-muted: #94a3b8;
+}
+
+[data-theme="developer"] {
+  --bg-primary: #0a0f1e;
+  --bg-secondary: #0f1629;
+  --accent-primary: #22d3ee;
+  --accent-primary-hover: #67e8f9;
+  --accent-primary-glow: rgba(34, 211, 238, 0.2);
+  --text-primary: #f0f9ff;
+  --text-secondary: #bae6fd;
+  --text-tertiary: #7dd3fc;
+  --text-muted: #38bdf8;
+}
+
+[data-theme="cyberpunk"] {
+  --bg-primary: #0d0519;
+  --bg-secondary: #170b2e;
+  --accent-primary: #e879f9;
+  --accent-primary-hover: #f0abfc;
+  --accent-primary-glow: rgba(232, 121, 249, 0.2);
+  --text-primary: #fdf4ff;
+  --text-secondary: #f0abfc;
+  --text-tertiary: #d8b4fe;
+  --text-muted: #a855f7;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  width: 340px;
+  min-height: 200px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.popup-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Header */
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.popup-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.popup-logo-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+}
+
+.popup-logo-text {
+  font-weight: 600;
+  font-size: 0.94rem;
+  color: var(--text-primary);
+}
+
+.popup-date {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Progress */
+.popup-progress {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.popup-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.popup-progress-label {
+  font-size: 0.86rem;
+  font-weight: 550;
+  color: var(--text-secondary);
+}
+
+.popup-progress-value {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+}
+
+.popup-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.popup-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), #22d3ee);
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.popup-stats {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* Task List */
+.popup-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.popup-task-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-secondary);
+  transition: all var(--transition-fast);
+}
+
+.popup-task-item:hover {
+  border-color: var(--border-primary);
+}
+
+.popup-task-check {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.popup-task-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: block;
+}
+
+.popup-task-title {
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.popup-empty {
+  text-align: center;
+  padding: 16px;
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+}
+
+/* Quick Add Form */
+.popup-add-form {
+  display: flex;
+  gap: 6px;
+}
+
+.popup-add-input {
+  flex: 1;
+  background: var(--bg-input);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 0.88rem;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.popup-add-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px var(--accent-primary-glow);
+}
+
+.popup-add-input::placeholder {
+  color: var(--text-muted);
+}
+
+.popup-add-btn {
+  background: var(--accent-primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: white;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.popup-add-btn:hover {
+  background: var(--accent-primary-hover);
+}
+
+/* Dashboard Button */
+.popup-dashboard-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+  font-family: var(--font-sans);
+  font-weight: 550;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.popup-dashboard-btn:hover {
+  background: var(--bg-glass);
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 2px;
+}

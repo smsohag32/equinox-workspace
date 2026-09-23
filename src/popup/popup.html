@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equinox Workspace</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <div class="popup-header">
+      <div class="popup-logo">
+        <img src="../../assets/icons/icon32.png" alt="Equinox Workspace" class="popup-logo-icon">
+        <span class="popup-logo-text">Equinox</span>
+      </div>
+      <span class="popup-date" id="popup-date"></span>
+    </div>
+
+    <!-- Progress -->
+    <div class="popup-progress">
+      <div class="popup-progress-header">
+        <span class="popup-progress-label">Today's Progress</span>
+        <span class="popup-progress-value" id="popup-progress-value">0%</span>
+      </div>
+      <div class="popup-progress-bar">
+        <div class="popup-progress-fill" id="popup-progress-fill"></div>
+      </div>
+      <div class="popup-stats">
+        <span id="popup-stats-text">0 / 0 tasks completed</span>
+      </div>
+    </div>
+
+    <!-- Task List Preview -->
+    <div class="popup-tasks" id="popup-tasks"></div>
+
+    <!-- Quick Add -->
+    <form class="popup-add-form" id="popup-add-form">
+      <input type="text" class="popup-add-input" id="popup-add-input" placeholder="Add a quick task…" autocomplete="off">
+      <button type="submit" class="popup-add-btn" title="Add task">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </button>
+    </form>
+
+    <!-- Open Dashboard -->
+    <button class="popup-dashboard-btn" id="popup-dashboard-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+      </svg>
+      Open Dashboard
+    </button>
+  </div>
+
+  <script src="../config.js"></script>
+  <script src="../utils/utils.js"></script>
+  <script src="../storage/storage.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

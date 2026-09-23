@@ -1,0 +1,50 @@
+{
+   "manifest_version": 3,
+   "name": "Equinox Workspace",
+   "version": "1.0.0",
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt0e1csjxS+GWzL/PmcRjZvXZ+jXTo1x9yQCxwAdxZqyaWh8Q+TezATwv+gcRqEiBcegPPuhSbmMGibY9LNnRWbCP6Da/pa8iiGcv5yiwI1/waRl70HMgqk5Qb8/h55kGTnjr0RjDRJmChYsOhWdDg0Aur0wLnt2GQh4bWlYPbReidB1epqQodH/AZ9N9xUgB8MfASQTlhl9HTNEu0zjzsPpeKyhvqTkEtYiDnBhE6+3m0SE3NDVp5ouO7L/mi8jp1TK8x5IqSUVnhq/Yu+JIq0U6wHR5t8HaEjC+VmNx+RceZELYaNA1wKHkla22gSe/d4mh1j9RVacrLbNWkEZfYwIDAQAB",
+   "description": "A premium productivity-focused New Tab dashboard with clock, search, task manager, sticky notes, and quick links.",
+   "icons": {
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+   },
+   "chrome_url_overrides": {
+      "newtab": "src/newtab/index.html"
+   },
+   "action": {
+      "default_popup": "src/popup/popup.html",
+      "default_icon": {
+         "16": "assets/icons/icon16.png",
+         "32": "assets/icons/icon32.png",
+         "48": "assets/icons/icon48.png",
+         "128": "assets/icons/icon128.png"
+      },
+      "default_title": "Devora — Developer New Tab"
+   },
+   "background": {
+      "service_worker": "src/background/service-worker.js"
+   },
+   "permissions": ["storage", "notifications", "alarms", "identity", "unlimitedStorage"],
+   "oauth2": {
+      "client_id": "771711885517-rs2jg9t8o46sjpdp6fun1gf0g4d0tjf8.apps.googleusercontent.com",
+      "scopes": [
+         "https://www.googleapis.com/auth/userinfo.email",
+         "https://www.googleapis.com/auth/userinfo.profile",
+         "https://www.googleapis.com/auth/keep"
+      ]
+   },
+   "host_permissions": [
+      "https://suggestqueries.google.com/*",
+      "https://www.googleapis.com/*",
+      "https://keep.googleapis.com/*",
+      "https://commons.wikimedia.org/*",
+      "https://upload.wikimedia.org/*",
+      "https://thumb.wikimedia.org/*",
+      "https://images-api.nasa.gov/*",
+      "https://images-assets.nasa.gov/*",
+      "https://dummyjson.com/*",
+      "https://zenquotes.io/*"
+   ]
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equinox Workspace</title>
+  <meta name="description" content="Equinox Workspace — A premium productivity-focused dashboard with clock, search, task manager, and sticky notes.">
+  <meta name="theme-color" id="theme-color-meta" content="#05070e">
+  <script src="theme-init.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Dynamic Photo Layer & Darkening Tint Layer -->
+  <div id="bg-dynamic-layer" class="bg-dynamic-layer"></div>
+  <div id="bg-overlay-layer" class="bg-overlay-layer"></div>
+
+  <!-- Background Canvas (particles) -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Floating Task Canvas Layer -->
+  <div id="tasks-container"></div>
+
+  <!-- Main App Container -->
+  <div class="app-container">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <p id="greeting"></p>
+      </div>
+      <div class="header-right">
+        <div id="pomodoro-container"></div>
+        <button class="btn-icon" id="settings-btn" title="Settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- Center Section: Greeting, Clock, Search -->
+      <section class="center-section">
+        <div class="clock-section">
+          <div id="clock-time"></div>
+          <div id="clock-date"></div>
+        </div>
+
+        <div class="search-section">
+          <form class="search-form" id="search-form" role="search">
+            <div class="task-input-icon-wrap" title="Quick Task Input">
+              <svg class="task-input-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </div>
+            <input
+              type="text"
+              class="search-input"
+              id="search-input"
+              placeholder="What's on your mind? Type a task and press Enter…"
+              autocomplete="off"
+              spellcheck="false"
+            >
+            <span class="search-hint-tag" id="search-hint-tag" title="Press Enter to create floating task card">↵ Add Task</span>
+          </form>
+        </div>
+      </section>
+
+      <!-- Quick Links -->
+      <section class="quicklinks-section">
+        <div id="quicklinks-container"></div>
+      </section>
+
+      <!-- Quote -->
+      <section class="quote-section" id="quote-container">
+        <div class="quote-content" id="quote-content">
+          <p id="quote-text" title="Click to copy quote"></p>
+          <div class="quote-footer">
+            <p id="quote-author"></p>
+            <button class="quote-refresh-btn" id="quote-refresh-btn" title="Get another random quote">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            </button>
+          </div>
+        </div>
+        <span class="quote-copy-feedback" id="quote-copy-feedback">Copied! ✓</span>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Floating Task Panel Launcher Button (Bottom-Right Widget) -->
+  <button class="tasks-widget-launcher" id="tasks-widget-launcher" title="Toggle Floating Tasks Panel">
+    <span class="launcher-label">Tasks</span>
+    <span class="launcher-badge" id="launcher-badge">✓</span>
+  </button>
+
+  <!-- Wallpaper Attribution & Shuffle Widget (Bottom-Left) -->
+  <div id="wallpaper-attribution-container" class="wallpaper-attribution-container"></div>
+
+  <!-- Modal Overlay (reusable) -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div id="modal-content"></div>
+  </div>
+
+  <!-- Scripts — order matters (dependencies first) -->
+  <script src="../config.js"></script>
+  <script src="../utils/utils.js"></script>
+  <script src="../storage/sync.js"></script>
+  <script src="../storage/storage.js"></script>
+  <script src="../services/image-providers.js"></script>
+  <script src="../services/wallpaper-manager.js"></script>
+  <script src="../components/wallpaper-attribution.js"></script>
+  <script src="../components/background.js"></script>
+  <script src="../components/greeting.js"></script>
+  <script src="../components/clock.js"></script>
+  <script src="../components/search.js"></script>
+  <script src="../components/tasks.js"></script>
+  <script src="../components/notes.js"></script>
+  <script src="../components/quicklinks.js"></script>
+  <script src="../components/quotes.js"></script>
+  <script src="../components/pomodoro.js"></script>
+  <script src="../components/calendar.js"></script>
+  <script src="../components/google-keep.js"></script>
+  <script src="../components/settings.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
