@@ -2,7 +2,6 @@
    "manifest_version": 3,
    "name": "Equinox Workspace",
    "version": "1.0.0",
-   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt0e1csjxS+GWzL/PmcRjZvXZ+jXTo1x9yQCxwAdxZqyaWh8Q+TezATwv+gcRqEiBcegPPuhSbmMGibY9LNnRWbCP6Da/pa8iiGcv5yiwI1/waRl70HMgqk5Qb8/h55kGTnjr0RjDRJmChYsOhWdDg0Aur0wLnt2GQh4bWlYPbReidB1epqQodH/AZ9N9xUgB8MfASQTlhl9HTNEu0zjzsPpeKyhvqTkEtYiDnBhE6+3m0SE3NDVp5ouO7L/mi8jp1TK8x5IqSUVnhq/Yu+JIq0U6wHR5t8HaEjC+VmNx+RceZELYaNA1wKHkla22gSe/d4mh1j9RVacrLbNWkEZfYwIDAQAB",
    "description": "A premium productivity-focused New Tab dashboard with clock, search, task manager, sticky notes, and quick links.",
    "icons": {
       "16": "assets/icons/icon16.png",
