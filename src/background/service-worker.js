@@ -61,59 +61,7 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   });
 });
 
-// ---- Google OAuth via message passing (MV3 requires getAuthToken from SW) ----
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'GOOGLE_SIGN_IN') {
-    chrome.identity.getAuthToken({ interactive: true }, async (token) => {
-      if (chrome.runtime.lastError || !token) {
-        sendResponse({ success: false, error: chrome.runtime.lastError?.message || 'No token' });
-        return;
-      }
-      try {
-        const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        if (data && data.email) {
-          sendResponse({
-            success: true,
-            user: {
-              signedIn: true,
-              email: data.email,
-              name: data.name || data.given_name || data.email.split('@')[0],
-              picture: data.picture || null,
-              lastSynced: Date.now()
-            }
-          });
-          return;
-        }
-      } catch (e) {
-        console.error('[SW] Error fetching user profile:', e);
-      }
-      sendResponse({ success: false, error: 'Failed to fetch profile' });
-    });
-    return true; // Keep message channel open for async response
-  }
 
-  if (message.type === 'GOOGLE_SIGN_OUT') {
-    chrome.identity.clearAllCachedAuthTokens(() => {
-      sendResponse({ success: true });
-    });
-    return true;
-  }
-
-  if (message.type === 'GET_AUTH_TOKEN') {
-    const interactive = message.interactive === true;
-    chrome.identity.getAuthToken({ interactive }, (token) => {
-      if (chrome.runtime.lastError || !token) {
-        sendResponse({ success: false, error: chrome.runtime.lastError?.message || 'No token' });
-        return;
-      }
-      sendResponse({ success: true, token });
-    });
-    return true;
-  }
-});
 
 // Handle alarms
 chrome.alarms.onAlarm.addListener(async (alarm) => {

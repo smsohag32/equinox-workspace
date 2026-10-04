@@ -24,7 +24,6 @@ const DevoraApp = {
       QuickLinksComponent.init(),
       QuotesComponent.init(),
       PomodoroComponent.init(),
-      CalendarComponent.init(),
       SettingsComponent.init()
     ]);
 

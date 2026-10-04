@@ -7,7 +7,7 @@ A premium Chrome Extension that replaces your default New Tab page with a beauti
 ## ✨ Features
 
 - **🕐 Real-time Clock** — Large digital clock with 12/24hr format, seconds, and date display
-- **🔎 Google Search** — Beautiful search bar with URL detection and keyboard shortcut (`/`)
+- **🔎 Web Search** — Integrated omni-search respecting your default browser search engine with URL detection and keyboard shortcut (`/`)
 - **✅ Task Manager** — Full daily task management with priorities, due times, edit/delete, and filtering
 - **📊 Productivity Overview** — Circular progress chart with completion stats
 - **📅 Daily Reset** — Date-keyed tasks with history browser for past days
@@ -29,20 +29,20 @@ A premium Chrome Extension that replaces your default New Tab page with a beauti
 2. Open Chrome and navigate to `chrome://extensions/`
 3. Enable **Developer mode** (toggle in top-right corner)
 4. Click **Load unpacked**
-5. Select the `devora/` directory (you may rename the directory folder if desired)
+5. Select the `ew/` directory
 6. Open a new tab — Equinox Workspace should appear!
 
 ### Packaging for Distribution
 
 1. Go to `chrome://extensions/`
 2. Click **Pack extension**
-3. Select the `devora/` directory as the extension root
+3. Select the `ew/` directory as the extension root
 4. Chrome will generate a `.crx` file for distribution
 
 ## 🏗️ Architecture
 
 ```
-devora/
+ew/
 ├── manifest.json               # Chrome Extension Manifest V3
 ├── README.md
 ├── src/
@@ -59,7 +59,7 @@ devora/
 │   ├── components/
 │   │   ├── background.js       # Animated canvas background
 │   │   ├── clock.js            # Real-time clock
-│   │   ├── search.js           # Google search
+│   │   ├── search.js           # Web search (Chrome Search API)
 │   │   ├── greeting.js         # Time-based greeting
 │   │   ├── tasks.js            # Task manager (CRUD + history)
 │   │   ├── productivity.js     # Progress overview

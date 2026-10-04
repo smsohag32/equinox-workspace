@@ -64,8 +64,7 @@ const SyncManager = {
 
   /** Force immediate sync push. */
   async push() {
-    const user = await this._getUser();
-    if (!user || !user.signedIn) { this._setStatus('no-account'); return; }
+    if (typeof chrome === 'undefined' || !chrome.storage?.sync) return;
     if (!this._isOnline) { this._setStatus('offline'); return; }
     if (this._isSyncing) return;
 
@@ -105,22 +104,17 @@ const SyncManager = {
         await this._syncSet('devora_sync_quicklinks', quicklinks);
       }
 
-      // Update meta with user account email
+      // Update meta
       const meta = {
         deviceId: this._deviceId,
         lastPush: Date.now(),
         version: 1,
-        email: user.email ? user.email.toLowerCase() : null,
         noteCount: notes.length,
         taskDays: Object.keys(taskPayload).length
       };
       await this._syncSet('devora_sync_meta', meta);
 
       this.lastSyncedAt = Date.now();
-      try {
-        user.lastSynced = this.lastSyncedAt;
-        await this._localSet('devora_google_user', user);
-      } catch (e) {}
       this._setStatus('idle');
     } catch (err) {
       console.warn('[SyncManager] push error:', err);
@@ -132,8 +126,7 @@ const SyncManager = {
 
   /** Pull remote data and merge with local. */
   async pull() {
-    const user = await this._getUser();
-    if (!user || !user.signedIn) { this._setStatus('no-account'); return false; }
+    if (typeof chrome === 'undefined' || !chrome.storage?.sync) return false;
     if (!this._isOnline) { this._setStatus('offline'); return false; }
 
     this._setStatus('syncing');
@@ -141,13 +134,6 @@ const SyncManager = {
     try {
       const meta = await this._syncGet('devora_sync_meta');
       if (!meta) { this._setStatus('idle'); return false; }
-
-      // Securely ensure remote backup belongs to this Google user
-      if (meta.email && user.email && meta.email.toLowerCase() !== user.email.toLowerCase()) {
-        console.log('[SyncManager] Remote backup is for account:', meta.email, 'Current user:', user.email);
-        this._setStatus('idle');
-        return false;
-      }
 
       // Pull notes
       const remoteNotes = await this._readChunked('devora_sync_notes_');
@@ -187,10 +173,6 @@ const SyncManager = {
       }
 
       this.lastSyncedAt = Date.now();
-      try {
-        user.lastSynced = this.lastSyncedAt;
-        await this._localSet('devora_google_user', user);
-      } catch (e) {}
       this._setStatus('idle');
       return true;
     } catch (err) {

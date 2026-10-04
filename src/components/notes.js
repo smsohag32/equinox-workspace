@@ -21,9 +21,6 @@ const NotesComponent = {
       document.body.appendChild(this.container);
     }
 
-    if (typeof GoogleKeepComponent !== 'undefined' && typeof GoogleKeepComponent.init === 'function') {
-      try { await GoogleKeepComponent.init(); } catch (e) {}
-    }
 
     await this.loadNotes();
     this.render();
@@ -32,41 +29,7 @@ const NotesComponent = {
   },
 
   async loadNotes() {
-    const localNotes = await StorageManager.getNotes();
-    this.googleUser = await StorageManager.getGoogleUser();
-
-    try {
-      if (this.googleUser && this.googleUser.signedIn && typeof GoogleKeepComponent !== 'undefined') {
-        const keepNotes = GoogleKeepComponent.notes || [];
-        if (keepNotes.length > 0) {
-          const keepMapped = keepNotes.map((kn, idx) => ({
-            id: `keep_${kn.keepId}`,
-            keepId: kn.keepId,
-            title: kn.title || 'Google Keep Note',
-            content: kn.text || '',
-            color: 'yellow',
-            pinned: false,
-            isGoogleKeep: true,
-            x: Math.min(window.innerWidth - 300, 40 + ((localNotes.length + idx) * 35)),
-            y: Math.min(window.innerHeight - 200, 160 + ((localNotes.length + idx) * 45))
-          }));
-
-          const localIds = new Set(localNotes.map(n => n.id));
-          const combined = [...localNotes];
-          for (const kn of keepMapped) {
-            if (!localIds.has(kn.id)) {
-              combined.push(kn);
-            }
-          }
-          this.notes = combined;
-          return;
-        }
-      }
-    } catch (e) {
-      console.warn('[NotesComponent] loadNotes merge error:', e);
-    }
-
-    this.notes = localNotes;
+    this.notes = await StorageManager.getNotes();
   },
 
   bindLauncherButton() {
@@ -167,9 +130,6 @@ const NotesComponent = {
     }
 
     const trashNotes = await StorageManager.getTrashNotes();
-    const isTrashMode = this.panelCategory === 'trash';
-    const keepNotes = (typeof GoogleKeepComponent !== 'undefined' && GoogleKeepComponent.notes) || [];
-
     const colorCounts = {
       all: this.notes.length,
       yellow: this.notes.filter(n => (n.color || 'yellow') === 'yellow').length,
@@ -177,8 +137,7 @@ const NotesComponent = {
       cyan: this.notes.filter(n => n.color === 'cyan').length,
       pink: this.notes.filter(n => n.color === 'pink').length,
       purple: this.notes.filter(n => n.color === 'purple').length,
-      trash: trashNotes.length,
-      keep: keepNotes.length
+      trash: trashNotes.length
     };
 
     let displayNotes = this.notes;
@@ -246,24 +205,7 @@ const NotesComponent = {
               <span class="sidebar-item-icon"><span class="sidebar-color-glow dot-purple"></span></span>
               <span class="sidebar-item-label">Purple</span>
               ${colorCounts.purple > 0 ? `<span class="sidebar-item-count">${colorCounts.purple}</span>` : ''}
-            </button>
-
-            <div class="sidebar-section-divider">
-              <span>CLOUD INTEGRATION</span>
-            </div>
-
-            <button class="sidebar-menu-item ${this.panelCategory === 'keep' ? 'active' : ''}" data-ncat="keep">
-              <span class="sidebar-item-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-                  <path d="M9 21h6v-1.5H9V21zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z" fill="#FBBF24"/>
-                  <path d="M12 4a5 5 0 0 0-5 5c0 1.95.99 3.65 2.5 4.63V15h5v-1.37c1.51-.98 2.5-2.68 2.5-4.63a5 5 0 0 0-5-5z" fill="#F59E0B"/>
-                </svg>
-              </span>
-              <span class="sidebar-item-label">Google Keep</span>
-              ${colorCounts.keep > 0 ? `<span class="sidebar-item-count sidebar-item-count--amber">${colorCounts.keep}</span>` : ''}
-            </button>
-
-            <div class="sidebar-section-divider">
+            </button>            <div class="sidebar-section-divider">
               <span>TRASH & ARCHIVE</span>
             </div>
 
@@ -283,7 +225,7 @@ const NotesComponent = {
             <div class="panel-header-left">
               <span class="panel-header-icon">${categoryIcon}</span>
               <h3 class="panel-header-title">${categoryTitle}</h3>
-              ${!isTrashMode && this.panelCategory !== 'keep' ? `<span class="panel-header-count-chip">${displayNotes.length}</span>` : ''}
+              ${!isTrashMode ? `<span class="panel-header-count-chip">${displayNotes.length}</span>` : ''}
             </div>
             <div class="panel-header-right">
               ${isTrashMode && trashNotes.length > 0 ? `
@@ -292,7 +234,7 @@ const NotesComponent = {
                   <span>Clean Trash</span>
                 </button>
               ` : ''}
-              ${!isTrashMode && this.panelCategory !== 'keep' ? `
+              ${!isTrashMode ? `
                 <button class="panel-hdr-icon-btn" id="notes-expand-all" title="Pin all notes to desktop canvas">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
                 </button>
@@ -304,11 +246,7 @@ const NotesComponent = {
           </header>
 
           <div class="panel-content-body">
-            ${this.panelCategory === 'keep' ? `
-              <div id="notes-keep-tab-content">
-                ${typeof GoogleKeepComponent !== 'undefined' ? GoogleKeepComponent.renderKeepTab() : '<p style="padding:16px;opacity:0.5">Google Keep sync not available.</p>'}
-              </div>
-            ` : (displayNotes.length === 0 ? `
+            ${displayNotes.length === 0 ? `
               <div class="panel-empty-inbox">
                 <div class="inbox-graphic-icon">
                   ${isTrashMode ? `
@@ -362,11 +300,11 @@ const NotesComponent = {
                   </div>
                 `).join('')}
               </div>`
-            )}
+            }
           </div>
 
           <footer class="panel-footer">
-            ${this.panelCategory === 'keep' ? '' : isTrashMode ? `
+            ${isTrashMode ? `
               <div class="panel-trash-footer-note">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/></svg>
                 <span>Items in Notes Trash Box can be restored or permanently cleaned</span>
@@ -411,9 +349,6 @@ const NotesComponent = {
     panel.querySelectorAll('.sidebar-menu-item').forEach(btn => {
       btn.addEventListener('click', () => {
         this.panelCategory = btn.dataset.ncat;
-        if (this.panelCategory === 'keep' && typeof GoogleKeepComponent !== 'undefined') {
-          GoogleKeepComponent.init();
-        }
         this.renderPanelBox();
       });
     });
@@ -422,11 +357,6 @@ const NotesComponent = {
     panel.querySelector('#notes-sidebar-add-btn')?.addEventListener('click', () => {
       this.addNote({ title: 'New Note', color: this.selectedAddColor || 'yellow', pinned: true });
     });
-
-    // Bind Keep events after render
-    if (this.panelCategory === 'keep' && typeof GoogleKeepComponent !== 'undefined') {
-      GoogleKeepComponent.bindEvents(panel.querySelector('#notes-keep-tab-content'));
-    }
 
     // Close and Expand All buttons
     document.getElementById('notes-close-x')?.addEventListener('click', () => this.closePanelBox());

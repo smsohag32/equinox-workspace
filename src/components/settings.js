@@ -141,116 +141,30 @@ const SettingsComponent = {
 
       <div class="settings-body">
 
-        <!-- Google Account & Cloud Sync -->
-        <div class="settings-section settings-google-section">
+        <!-- Data Backup & Restore -->
+        <div class="settings-section settings-backup-section">
           <h3 class="settings-section-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
             </svg>
-            Google Sync & Account
+            Data Backup & Restore
           </h3>
-          ${g.signedIn ? `
-            <div class="google-user-card glass-card">
-              <div class="google-user-header">
-                <div class="google-user-avatar">
-                  ${g.picture ? `<img src="${g.picture}" alt="Avatar">` : `<span class="avatar-fallback">${(g.name || 'G')[0].toUpperCase()}</span>`}
-                </div>
-                <div class="google-user-info">
-                  <div class="google-user-name">${Utils.escapeHtml(g.name || 'Google Account')}</div>
-                  <div class="google-user-email">${Utils.escapeHtml(g.email || '')}</div>
-                  <div class="google-user-sync-time" id="google-last-synced-time">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                    <span>${g.lastSynced ? `Synced ${Utils.relativeTime(g.lastSynced)}` : 'Synced just now'}</span>
-                  </div>
-                </div>
-                <div class="sync-status-badge active" id="settings-sync-badge">
-                  <span class="sync-pulse-dot"></span>
-                  <span class="sync-text">Connected</span>
-                </div>
-              </div>
-
-              <div class="google-services-grid">
-                <div class="google-service-chip connected">
-                  <svg class="service-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path></svg>
-                  <span class="service-name">Task Backup</span>
-                  <span class="service-status">✓ Auto Sync</span>
-                </div>
-                <div class="google-service-chip connected">
-                  <svg class="service-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
-                  <span class="service-name">Sticky Notes</span>
-                  <span class="service-status">✓ Auto Sync</span>
-                </div>
-                <div class="google-service-chip connected">
-                  <svg class="service-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"></path></svg>
-                  <span class="service-name">Settings Sync</span>
-                  <span class="service-status">✓ Auto Sync</span>
-                </div>
-                <div class="google-service-chip connected">
-                  <svg class="service-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                  <span class="service-name">Cloud Backup</span>
-                  <span class="service-status">✓ Secured</span>
-                </div>
-              </div>
-
-              <div class="google-card-actions">
-                <button class="btn btn-sm btn-primary google-action-btn" id="google-sync-now-btn" title="Sync all Google services now">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-                  <span>Sync Now</span>
-                </button>
-                <button class="btn btn-sm btn-secondary google-action-btn" id="google-export-btn" title="Export Backup JSON">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  <span>Export</span>
-                </button>
-                <button class="btn btn-sm btn-secondary google-action-btn" id="google-import-btn" title="Import Backup JSON">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                  <span>Import</span>
-                </button>
-                <button class="btn btn-sm btn-danger-ghost google-action-btn" id="google-sign-out-btn" title="Sign Out">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                  <span>Sign Out</span>
-                </button>
-                <input type="file" id="google-import-file" accept=".json" style="display: none;">
-              </div>
-            </div>` : `
-            <div class="google-signin-card glass-card">
-              <div class="google-signin-header">
-                <div class="google-logo-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24">
-                    <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.1 9 5 12 5z"/>
-                    <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
-                    <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 10.8 0 12.5s.7 2.8 1.9 5.2l3.7-2.9z"/>
-                    <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.1-6.4-5.2L1.9 17C3.7 20.7 7.5 24 12 24z"/>
-                  </svg>
-                </div>
-                <div class="google-signin-titles">
-                  <h4 class="google-signin-title">Connect Google Account</h4>
-                  <p class="google-signin-desc">Securely sync and backup your extension tasks, sticky notes & settings across your devices.</p>
-                </div>
-              </div>
-              <button class="btn btn-primary google-signin-btn" id="google-sign-in-btn">
-                <svg width="18" height="18" viewBox="0 0 24 24">
-                  <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.1 9 5 12 5z"/>
-                  <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
-                  <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 10.8 0 12.5s.7 2.8 1.9 5.2l3.7-2.9z"/>
-                  <path fill="#34A853" d="M12 24c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.1-6.4-5.2L1.9 17C3.7 20.7 7.5 24 12 24z"/>
-                </svg>
-                <span>Sign in with Google</span>
+          <div class="backup-card glass-card" style="padding: 16px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);">
+            <p style="margin: 0 0 14px 0; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+              Export all your tasks, sticky notes, and personalized settings into a JSON backup file, or restore your workspace data anytime on any device.
+            </p>
+            <div class="backup-actions-row" style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button class="btn btn-sm btn-primary backup-action-btn" id="google-export-btn" title="Export Backup JSON">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <span>Export Backup</span>
               </button>
-
-              <div class="google-backup-row">
-                <button class="btn btn-sm btn-secondary google-action-btn" id="google-export-btn" title="Export Backup JSON">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                  <span>Export Backup</span>
-                </button>
-                <button class="btn btn-sm btn-secondary google-action-btn" id="google-import-btn" title="Import Backup JSON">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                  <span>Import Backup</span>
-                </button>
-                <input type="file" id="google-import-file" accept=".json" style="display: none;">
-              </div>
-            </div>`
-          }
+              <button class="btn btn-sm btn-secondary backup-action-btn" id="google-import-btn" title="Import Backup JSON">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span>Import Backup</span>
+              </button>
+              <input type="file" id="google-import-file" accept=".json" style="display: none;">
+            </div>
+          </div>
         </div>
 
         <!-- Sticky Notes -->
@@ -539,7 +453,7 @@ const SettingsComponent = {
           </h3>
           <div class="settings-about-header">
             <p><strong>Equinox Workspace</strong> — Ultimate Dashboard</p>
-            <p class="settings-version">Version 1.0.0</p>
+            <p class="settings-version">Version 1.0.1</p>
             <p class="settings-tagline">Your developer command center.</p>
           </div>
         </div>
@@ -584,154 +498,6 @@ const SettingsComponent = {
     document.getElementById('settings-close')?.addEventListener('click', () => this.close());
     overlay.addEventListener('click', () => this.close());
 
-    // Google Sign in
-    const signInBtn = document.getElementById('google-sign-in-btn');
-    if (signInBtn) {
-      signInBtn.addEventListener('click', async () => {
-        if (signInBtn.disabled || signInBtn.classList.contains('is-loading')) return;
-        
-        // Disable button immediately
-        signInBtn.disabled = true;
-        signInBtn.setAttribute('disabled', 'true');
-        signInBtn.classList.add('is-loading');
-
-        // Also disable sibling backup buttons
-        const backupBtns = panel.querySelectorAll('.google-backup-row .google-action-btn');
-        backupBtns.forEach(b => {
-          b.disabled = true;
-          b.setAttribute('disabled', 'true');
-        });
-
-        const origContent = signInBtn.innerHTML;
-        signInBtn.innerHTML = `
-          <svg class="spin-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
-          </svg>
-          <span class="signin-btn-text">Connecting to Google...</span>
-        `;
-
-        try {
-          const user = await StorageManager.signInGoogle();
-          this.googleUser = user;
-          if (user && user.signedIn) {
-            this.showToast(`Connected as ${user.email || user.name}`, 'success');
-
-            // Auto sync and backup extension data linked to this Google account
-            if (typeof SyncManager !== 'undefined') {
-              await SyncManager.pull();
-              await SyncManager.push();
-            }
-            if (typeof TasksComponent !== 'undefined') await TasksComponent.loadTasks();
-            if (typeof NotesComponent !== 'undefined') await NotesComponent.init();
-
-            this.renderPanel();
-          } else {
-            const errMsg = user?.error || 'Sign in was cancelled or could not be completed';
-            this.showToast(errMsg, 'warning');
-            signInBtn.disabled = false;
-            signInBtn.removeAttribute('disabled');
-            signInBtn.classList.remove('is-loading');
-            signInBtn.innerHTML = origContent;
-            backupBtns.forEach(b => {
-              b.disabled = false;
-              b.removeAttribute('disabled');
-            });
-          }
-        } catch (err) {
-          console.error('[Settings] Google sign in error:', err);
-          this.showToast('Google sign-in error: ' + (err.message || 'Unknown error'), 'error');
-          signInBtn.disabled = false;
-          signInBtn.removeAttribute('disabled');
-          signInBtn.classList.remove('is-loading');
-          signInBtn.innerHTML = origContent;
-          backupBtns.forEach(b => {
-            b.disabled = false;
-            b.removeAttribute('disabled');
-          });
-        }
-      });
-    }
-
-    // Google Sign out
-    const signOutBtn = document.getElementById('google-sign-out-btn');
-    if (signOutBtn) {
-      signOutBtn.addEventListener('click', async () => {
-        if (signOutBtn.disabled) return;
-
-        const confirmed = await Utils.confirm({
-          title: 'Sign Out Google Account',
-          message: 'Are you sure you want to sign out? Cloud sync will be disconnected and all cached authentication tokens will be securely wiped.',
-          confirmText: 'Sign Out',
-          type: 'danger'
-        });
-        if (!confirmed) return;
-
-        // Disable all action buttons to avoid concurrent actions
-        const actionBtns = panel.querySelectorAll('.google-action-btn');
-        actionBtns.forEach(b => b.disabled = true);
-
-        signOutBtn.innerHTML = `
-          <svg class="spin-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
-          </svg>
-          <span>Signing out...</span>
-        `;
-
-        try {
-          this.googleUser = await StorageManager.signOutGoogle();
-          this.showToast('Successfully signed out of Google account', 'info');
-          this.renderPanel();
-          if (typeof NotesComponent !== 'undefined') NotesComponent.refresh();
-        } catch (err) {
-          console.error('[Settings] Google sign out error:', err);
-          this.showToast('Sign out error: ' + (err.message || 'Unknown error'), 'error');
-          this.renderPanel();
-        }
-      });
-    }
-
-    // Google Sync Now
-    const syncBtn = document.getElementById('google-sync-now-btn');
-    if (syncBtn) {
-      syncBtn.addEventListener('click', async () => {
-        if (syncBtn.disabled) return;
-
-        const actionBtns = panel.querySelectorAll('.google-action-btn');
-        actionBtns.forEach(b => b.disabled = true);
-
-        syncBtn.classList.add('is-loading');
-        syncBtn.innerHTML = `
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin-icon">
-            <polyline points="23 4 23 10 17 10"/>
-            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-          </svg>
-          <span>Syncing...</span>
-        `;
-
-        const badge = panel.querySelector('#settings-sync-badge');
-        if (badge) {
-          badge.className = 'sync-status-badge syncing';
-          badge.innerHTML = `<span class="sync-pulse-dot"></span><span class="sync-text">Syncing...</span>`;
-        }
-
-        try {
-          if (typeof SyncManager !== 'undefined') {
-            await SyncManager.pull();
-            await SyncManager.push();
-          }
-          if (typeof TasksComponent !== 'undefined') await TasksComponent.loadTasks();
-          if (typeof NotesComponent !== 'undefined') await NotesComponent.init();
-
-          this.googleUser = await StorageManager.getGoogleUser();
-          this.showToast('Workspace backup synchronized', 'success');
-          this.renderPanel();
-        } catch (err) {
-          console.error('[Settings] Sync now error:', err);
-          this.showToast('Sync issue: ' + (err.message || 'Unknown error'), 'warning');
-          this.renderPanel();
-        }
-      });
-    }
 
     // Google Export
     const exportBtn = document.getElementById('google-export-btn');

@@ -8,8 +8,7 @@ Thank you for choosing to use Equinox Workspace ("Extension", "we", "us", or "ou
 
 Equinox Workspace is designed with privacy as a priority. We collect and process the absolute minimum amount of information required for the Extension to function properly.
 
-- **Local Storage Data:** Your tasks, customized settings, theme preferences, and uploaded background images are stored entirely locally on your device using your browser's local storage capabilities (`chrome.storage.local`).
-- **Google Account Information:** If you choose to use features that require Google authentication (such as syncing tasks with Google Keep), the Extension requests access to your email address and profile info via Google's official Identity API. This data is only used locally for authentication and API requests. We do not store this information on any external servers.
+- **Local Storage Data:** Your tasks, sticky notes, customized settings, theme preferences, and uploaded background images are stored entirely locally on your device using your browser's local storage capabilities (`chrome.storage.local` and optional `chrome.storage.sync`). No account or external sign-in is required.
 
 ## 2. How We Use Your Information
 
@@ -19,7 +18,7 @@ Equinox Workspace is designed with privacy as a priority. We collect and process
 ## 3. Third-Party Services
 
 The Extension may interact with the following third-party services directly from your browser to provide specific features:
-- **Google APIs:** For authentication and fetching Google Search suggestions.
+- **Search Suggestions:** For fetching optional search suggestions.
 - **ZenQuotes API:** To fetch daily motivational quotes.
 - **NASA / Wikimedia APIs:** To fetch background images.
 

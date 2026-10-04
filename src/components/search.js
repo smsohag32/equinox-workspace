@@ -24,10 +24,10 @@ const SearchComponent = {
 
     this.createSuggestionsContainer();
 
-    // Google Icon button explicitly triggers Google Search if present
-    const googleBtn = document.getElementById('search-google-btn');
-    if (googleBtn) {
-      googleBtn.addEventListener('click', () => {
+    // Search button triggers search if present
+    const searchBtn = document.getElementById('search-google-btn') || document.getElementById('search-web-btn');
+    if (searchBtn) {
+      searchBtn.addEventListener('click', () => {
         this.performSearch(this.searchInput.value);
       });
     }
@@ -187,8 +187,8 @@ const SearchComponent = {
       this.searchHintTag.innerHTML = '🌐 Open URL';
       this.searchHintTag.title = 'Press Enter to open this website';
     } else if (query.startsWith('g ') || query.startsWith('?')) {
-      this.searchHintTag.innerHTML = '🔍 Google Search';
-      this.searchHintTag.title = 'Press Enter to search Google';
+      this.searchHintTag.innerHTML = '🔍 Search Web';
+      this.searchHintTag.title = 'Press Enter to search the web';
     } else {
       this.searchHintTag.innerHTML = '↵ Add Task';
       this.searchHintTag.title = 'Press Enter to create task • Shift+Enter to search web';
@@ -299,10 +299,10 @@ const SearchComponent = {
           </div>
           <div class="suggestion-content">
             <div class="suggestion-title">
-              <span>Search Google</span>
+              <span>Search Web</span>
               <span class="suggestion-quote">“${Utils.escapeHtml(cleanSearchQuery)}”</span>
             </div>
-            <div class="suggestion-subtext">Search web results on Google</div>
+            <div class="suggestion-subtext">Search web results using default browser search engine</div>
           </div>
           <div class="suggestion-badge">
             <kbd class="suggestion-kbd">Shift ↵</kbd>
@@ -316,7 +316,7 @@ const SearchComponent = {
       itemsHtml += `
         <div class="suggestion-section-title suggestion-section-title--spaced">
           <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <span>Google Suggestions</span>
+          <span>Search Suggestions</span>
         </div>
       `;
 
@@ -379,7 +379,7 @@ const SearchComponent = {
         preset: ''
       },
       {
-        title: 'Search with Google',
+        title: 'Search the Web',
         desc: 'Hold Shift + Enter to search the web, or prefix with "g <term>"',
         icon: 'search',
         badge: 'Shift ↵',
@@ -578,17 +578,22 @@ const SearchComponent = {
     if (!query) return;
 
     this.clear();
-    let engineKey = 'google';
-    try {
-      if (typeof StorageManager !== 'undefined' && StorageManager.getSettings) {
-        const settings = await StorageManager.getSettings();
-        if (settings?.search?.engine) engineKey = settings.search.engine;
-      }
-    } catch (e) {}
 
-    const engines = (typeof CONFIG !== 'undefined' && CONFIG.SEARCH_ENGINES) ? CONFIG.SEARCH_ENGINES : {};
-    const searchUrl = engines[engineKey]?.searchUrl || 'https://www.google.com/search?q=';
-    window.location.href = `${searchUrl}${encodeURIComponent(query)}`;
+    // Respect user's selected search provider using official Chrome Search API
+    if (typeof chrome !== 'undefined' && chrome.search && typeof chrome.search.query === 'function') {
+      try {
+        chrome.search.query({
+          text: query,
+          disposition: 'CURRENT_TAB'
+        });
+        return;
+      } catch (err) {
+        console.warn('[SearchComponent] chrome.search.query error, falling back:', err);
+      }
+    }
+
+    // Fallback if not running in Chrome extension context
+    window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
   },
 
   openUrl(urlText) {

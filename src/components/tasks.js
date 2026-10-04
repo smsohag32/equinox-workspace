@@ -115,38 +115,7 @@ const TasksComponent = {
 
   async loadTasks(date) {
     this.currentDate = date || Utils.getDateKey();
-    const localTasks = await StorageManager.getTasks(this.currentDate);
-
-    try {
-      const gUser = await StorageManager.getGoogleUser();
-      if (gUser && gUser.signedIn && typeof GoogleTasksComponent !== 'undefined') {
-        const gTasks = (GoogleTasksComponent.tasks || []).map((gt, idx) => ({
-          id: `gtask_${gt.id}`,
-          gtaskId: gt.id,
-          title: gt.title,
-          description: 'Google Tasks Sync',
-          priority: 'medium',
-          completed: gt.completed,
-          isGoogleTask: true,
-          x: Math.min(window.innerWidth - 320, 24 + ((localTasks.length + idx) * 20)),
-          y: Math.min(window.innerHeight - 120, 100 + ((localTasks.length + idx) * 85))
-        }));
-
-        const localIds = new Set(localTasks.map(t => t.id));
-        const combined = [...localTasks];
-        for (const gt of gTasks) {
-          if (!localIds.has(gt.id)) {
-            combined.push(gt);
-          }
-        }
-        this.tasks = combined;
-        return;
-      }
-    } catch(e) {
-      console.warn('[TasksComponent] loadTasks merge error:', e);
-    }
-
-    this.tasks = localTasks;
+    this.tasks = await StorageManager.getTasks(this.currentDate);
   },
 
   /* ========== RENDER ========== */
@@ -1739,14 +1708,7 @@ const TasksComponent = {
       el.classList.add('task-removing');
       await new Promise(r => setTimeout(r, 250));
     }
-    if (typeof taskId === 'string' && taskId.startsWith('gtask_')) {
-      const gtaskId = taskId.replace('gtask_', '');
-      if (typeof GoogleTasksComponent !== 'undefined') {
-        await GoogleTasksComponent.deleteTask(gtaskId);
-      }
-    } else {
-      await StorageManager.deleteTask(taskId);
-    }
+    await StorageManager.deleteTask(taskId);
     await this.loadTasks();
     this.render();
     if (this.isExpanded) this.renderExpanded();

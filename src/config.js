@@ -8,8 +8,8 @@ const CONFIG = {
    // Application Metadata
    APP: {
       NAME: "Equinox Workspace",
-      VERSION: "1.0.0",
-      REPOSITORY: "https://github.com/project2morrow-software-ltd/devora",
+      VERSION: "1.0.1",
+      REPOSITORY: "https://github.com/smsohag32/equinox-workspace",
       DESCRIPTION: "A premium, open-source productivity dashboard for modern developers.",
    },
 
@@ -38,9 +38,7 @@ const CONFIG = {
          showSeconds: true,
          showDate: true,
       },
-      search: {
-         engine: "google",
-      },
+      search: {},
       tasks: {
          dailyReset: true,
          notifications: false,
@@ -360,18 +358,6 @@ const CONFIG = {
          icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.144 13.067v-2.134L16.55 12zm1.857 1.151L12 19.848l-7.993-5.622V9.782L12 4.16l7.993 5.615v4.643h.008zM12 0L0 8.441v7.094l12 8.452 12-8.452V8.441L12 0zM5.856 13.067l1.594-1.067-1.594-1.067v2.134zm6.144 2.9l-4.288-3.026L5.856 14l6.144 4.324L18.144 14l-1.856-1.059-4.288 3.026zM12 8.033l-4.288 3.026 4.288 3.026 4.288-3.026L12 8.033z"/></svg>`,
       },
    ],
-
-   // Google OAuth2 & Cloud Sync Configuration
-   GOOGLE: {
-      CLIENT_ID: "771711885517-rs2jg9t8o46sjpdp6fun1gf0g4d0tjf8.apps.googleusercontent.com",
-      SCOPES: [
-         "https://www.googleapis.com/auth/userinfo.email",
-         "https://www.googleapis.com/auth/userinfo.profile",
-      ],
-      ENDPOINTS: {
-         USER_INFO: "https://www.googleapis.com/oauth2/v3/userinfo",
-      },
-   },
 };
 
 // Export globally for all extension contexts
