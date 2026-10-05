@@ -13,7 +13,7 @@ A premium Chrome Extension that replaces your default New Tab page with a beauti
 - **📅 Daily Reset** — Date-keyed tasks with history browser for past days
 - **🎯 Pomodoro Timer** — Built-in work/break timer with session tracking
 - **💬 Developer Quotes** — Curated programming quotes rotating daily
-- **🔗 Quick Links** — GitHub, Stack Overflow, MDN, npm, ChatGPT, Dev.to, CodePen
+- **🔗 Quick Links** — Customizable quick-access shortcuts to your favorite tools, documentation, and web apps
 - **🎨 Themes** — Dark, Light, and Developer themes with glassmorphism design
 - **🖼️ Custom Backgrounds** — Animated code particles, gradient orbs, or upload your own image
 - **⌨️ Keyboard Shortcuts** — `/` search, `T` add task, `Esc` close modals
