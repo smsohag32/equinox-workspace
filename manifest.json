@@ -1,5 +1,15 @@
 {
    "manifest_version": 3,
+   "browser_specific_settings": {
+      "gecko": {
+         "id": "equinox-workspace@smsohag32.com",
+         "strict_min_version": "140.0",
+         "data_collection_permissions": {
+            "required": ["none"],
+            "optional": []
+         }
+      }
+   },
    "name": "Equinox Workspace",
    "version": "1.0.1",
    "description": "A premium productivity-focused New Tab dashboard with clock, search, task manager, sticky notes, and quick links.",
@@ -23,7 +33,8 @@
       "default_title": "Equinox Workspace"
    },
    "background": {
-      "service_worker": "src/background/service-worker.js"
+      "service_worker": "src/background/service-worker.js",
+      "scripts": ["src/background/service-worker.js"]
    },
    "permissions": ["storage", "notifications", "alarms", "unlimitedStorage", "search"],
    "host_permissions": [
