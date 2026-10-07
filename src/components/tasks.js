@@ -142,8 +142,9 @@ const TasksComponent = {
     const maxY = (window.innerHeight || 800) - 90;
 
     const cardsHtml = pinnedTasks.map((task, idx) => {
-      const w = task.width || defaultWidth;
+      const w = task.width;
       const h = task.height || defaultHeight;
+      const calcW = w || defaultWidth;
 
       let x, y;
       if (task.x !== undefined && task.y !== undefined && task.isCustomPlaced) {
@@ -151,7 +152,7 @@ const TasksComponent = {
         y = task.y;
       } else {
         if (currentY + h > maxY && idx > 0) {
-          currentX += w + 16;
+          currentX += calcW + 16;
           currentY = 95;
         }
         x = currentX;
@@ -270,7 +271,7 @@ const TasksComponent = {
 
     const x = posX !== undefined ? posX : (task.x !== undefined ? task.x : Math.min(window.innerWidth - 320, 28 + (index * 20)));
     const y = posY !== undefined ? posY : (task.y !== undefined ? task.y : Math.min(window.innerHeight - 120, 95 + (index * 95)));
-    const widthStyle = posW ? `width: ${posW}px;` : (task.width ? `width: ${task.width}px;` : 'width: 320px;');
+    const widthStyle = posW ? `width: ${posW}px;` : (task.width ? `width: ${task.width}px;` : 'width: fit-content; max-width: 380px; min-width: 220px;');
     const heightStyle = posH ? `height: ${posH}px;` : (task.height ? `height: ${task.height}px;` : '');
 
     const stylePos = `style="position: fixed; left: ${x}px; top: ${y}px; z-index: 60; ${widthStyle} ${heightStyle}"`;

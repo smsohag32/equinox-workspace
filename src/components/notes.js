@@ -45,6 +45,12 @@ const NotesComponent = {
 
     launcher.addEventListener('click', (e) => {
       e.stopPropagation();
+      // Direct action: Create/Pin new note directly on canvas without opening floating panel box
+      this.addNote({ title: 'New Note', color: 'yellow', pinned: true });
+    });
+    launcher.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       this.togglePanelBox();
     });
   },
