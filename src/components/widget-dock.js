@@ -247,28 +247,57 @@ const WidgetDockManager = {
     }
   },
 
-  /* ========== PANEL DRAG-TO-MOVE UTILITY ========== */
+  /* ========== PANEL DRAG-TO-MOVE & RESIZE UTILITY ========== */
   async makePanelDraggable(panelEl, storageKey) {
     if (!panelEl) return;
 
-    // Apply saved position if present
+    // Apply saved size & position if present
     try {
       const savedPos = await StorageManager.get(storageKey);
-      if (savedPos && typeof savedPos.left === 'number' && typeof savedPos.top === 'number') {
-        const maxL = window.innerWidth - panelEl.offsetWidth - 10;
-        const maxT = window.innerHeight - panelEl.offsetHeight - 10;
-        const clampedL = Math.max(10, Math.min(maxL, savedPos.left));
-        const clampedT = Math.max(10, Math.min(maxT, savedPos.top));
-        panelEl.style.left = `${clampedL}px`;
-        panelEl.style.top = `${clampedT}px`;
-        panelEl.style.right = 'auto';
-        panelEl.style.bottom = 'auto';
-        panelEl.classList.add('custom-panel-positioned');
+      if (savedPos) {
+        if (typeof savedPos.width === 'number' && savedPos.width >= 480) {
+          panelEl.style.width = `${Math.min(savedPos.width, window.innerWidth - 20)}px`;
+        }
+        if (typeof savedPos.height === 'number' && savedPos.height >= 400) {
+          panelEl.style.height = `${Math.min(savedPos.height, window.innerHeight - 20)}px`;
+        }
+        if (typeof savedPos.left === 'number' && typeof savedPos.top === 'number') {
+          const maxL = window.innerWidth - panelEl.offsetWidth - 10;
+          const maxT = window.innerHeight - panelEl.offsetHeight - 10;
+          const clampedL = Math.max(10, Math.min(maxL, savedPos.left));
+          const clampedT = Math.max(10, Math.min(maxT, savedPos.top));
+          panelEl.style.left = `${clampedL}px`;
+          panelEl.style.top = `${clampedT}px`;
+          panelEl.style.right = 'auto';
+          panelEl.style.bottom = 'auto';
+          panelEl.classList.add('custom-panel-positioned');
+        } else {
+          this.positionPanelNearDock(panelEl);
+        }
       } else {
         this.positionPanelNearDock(panelEl);
       }
     } catch(err) {
       this.positionPanelNearDock(panelEl);
+    }
+
+    // ResizeObserver size persistence
+    if (window.ResizeObserver && !panelEl._hasResizeObs) {
+      panelEl._hasResizeObs = true;
+      let initialSkip = true;
+      const ro = new ResizeObserver(entries => {
+        if (initialSkip) { initialSkip = false; return; }
+        for (let entry of entries) {
+          const w = Math.round(entry.target.offsetWidth);
+          const h = Math.round(entry.target.offsetHeight);
+          clearTimeout(panelEl._resizeTimer);
+          panelEl._resizeTimer = setTimeout(async () => {
+            const cur = await StorageManager.get(storageKey) || {};
+            await StorageManager.set(storageKey, { ...cur, width: w, height: h });
+          }, 300);
+        }
+      });
+      ro.observe(panelEl);
     }
 
     // Attach drag handles to panel headers if not already attached
@@ -395,6 +424,8 @@ const WidgetDockManager = {
     if (!panelEl) return;
     panelEl.style.left = '';
     panelEl.style.top = '';
+    panelEl.style.width = '';
+    panelEl.style.height = '';
     panelEl.style.right = panelId === 'tasks-floating-panel' ? '20px' : (panelId === 'notes-floating-panel' ? '20px' : '');
     panelEl.style.bottom = '72px';
     panelEl.classList.remove('custom-panel-positioned');

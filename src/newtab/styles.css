@@ -3853,35 +3853,51 @@ body.custom-bg-active .quicklink {
 }
 
 /* ============================================================
-   Floating Task & Notes Panel Box (Matching Design System)
+   Floating Task & Notes Panel Box (Resizable & Wide Layout)
    ============================================================ */
 .tasks-floating-panel,
 .notes-floating-panel {
   position: fixed;
   bottom: 72px;
-  width: calc(48vw - 16px);
-  min-width: 360px;
-  max-width: 720px;
-  height: 590px;
+  width: 760px;
+  min-width: 480px;
+  max-width: 95vw;
+  height: 620px;
+  min-height: 420px;
   max-height: calc(100vh - 90px);
+  resize: both;
+  overflow: hidden;
   background: var(--bg-glass-solid);
   backdrop-filter: blur(40px) saturate(1.4);
   -webkit-backdrop-filter: blur(40px) saturate(1.4);
   border: 1px solid var(--border-primary);
-  border-radius: 16px;
+  border-radius: 18px;
   box-shadow:
-    0 24px 64px rgba(0, 0, 0, 0.5),
-    0 8px 24px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255,255,255,0.04) inset,
-    0 0 32px rgba(var(--accent-primary-rgb), 0.06);
+    0 24px 64px rgba(0, 0, 0, 0.55),
+    0 8px 24px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(255,255,255,0.05) inset,
+    0 0 32px rgba(var(--accent-primary-rgb), 0.08);
   z-index: var(--z-dropdown);
   opacity: 0;
   transform: translateY(10px) scale(0.98);
   pointer-events: none;
   transition: opacity 0.22s ease, transform 0.22s ease;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.tasks-floating-panel::after,
+.notes-floating-panel::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid rgba(255, 255, 255, 0.35);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  border-bottom-right-radius: 2px;
 }
 
 .tasks-floating-panel { right: 20px; left: auto; }

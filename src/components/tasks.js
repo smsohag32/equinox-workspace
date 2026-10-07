@@ -1242,24 +1242,33 @@ const TasksComponent = {
       trash: trashTasks.length
     };
 
+    const icons = {
+      today: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`,
+      upcoming: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>`,
+      pinned: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.89A2 2 0 0 1 15 10.76V6h1a1 1 0 0 0 0-2H8a1 1 0 0 0 0 2h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.89A2 2 0 0 0 5 15.24z"/></svg>`,
+      inbox: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>`,
+      completed: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+      trash: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>`
+    };
+
     let displayTasks = [];
     let categoryTitle = 'All Tasks';
-    let categoryIcon = '📥';
+    let categoryIcon = icons.inbox;
     const isTrashMode = this.panelCategory === 'trash';
 
     switch (this.panelCategory) {
       case 'today':
-        displayTasks = todayTasks; categoryTitle = 'Today'; categoryIcon = '☀️'; break;
+        displayTasks = todayTasks; categoryTitle = 'Today'; categoryIcon = icons.today; break;
       case 'upcoming':
-        displayTasks = upcomingTasks; categoryTitle = 'Upcoming'; categoryIcon = '📅'; break;
+        displayTasks = upcomingTasks; categoryTitle = 'Upcoming'; categoryIcon = icons.upcoming; break;
       case 'pinned':
-        displayTasks = pinnedTasks; categoryTitle = 'Pinned on Screen'; categoryIcon = '📌'; break;
+        displayTasks = pinnedTasks; categoryTitle = 'Pinned on Screen'; categoryIcon = icons.pinned; break;
       case 'completed':
-        displayTasks = completedTasks; categoryTitle = 'Completed'; categoryIcon = '✓'; break;
+        displayTasks = completedTasks; categoryTitle = 'Completed'; categoryIcon = icons.completed; break;
       case 'trash':
-        displayTasks = trashTasks; categoryTitle = 'Trash Box'; categoryIcon = '🗑️'; break;
+        displayTasks = trashTasks; categoryTitle = 'Trash Box'; categoryIcon = icons.trash; break;
       default:
-        displayTasks = inboxTasks; categoryTitle = 'All Tasks'; categoryIcon = '📥'; break;
+        displayTasks = inboxTasks; categoryTitle = 'All Tasks'; categoryIcon = icons.inbox; break;
     }
 
     panel.innerHTML = `
@@ -1275,32 +1284,32 @@ const TasksComponent = {
           </div>
           <nav class="sidebar-menu">
             <button class="sidebar-menu-item ${this.panelCategory === 'today' || (!this.panelCategory && counts.today > 0) ? 'active' : ''}" data-cat="today">
-              <span class="sidebar-item-icon">☀️</span>
+              <span class="sidebar-item-icon">${icons.today}</span>
               <span class="sidebar-item-label">Today</span>
               ${counts.today > 0 ? `<span class="sidebar-item-count">${counts.today}</span>` : ''}
             </button>
             <button class="sidebar-menu-item ${this.panelCategory === 'upcoming' ? 'active' : ''}" data-cat="upcoming">
-              <span class="sidebar-item-icon">📅</span>
+              <span class="sidebar-item-icon">${icons.upcoming}</span>
               <span class="sidebar-item-label">Upcoming</span>
               ${counts.upcoming > 0 ? `<span class="sidebar-item-count">${counts.upcoming}</span>` : ''}
             </button>
             <button class="sidebar-menu-item ${this.panelCategory === 'pinned' ? 'active' : ''}" data-cat="pinned">
-              <span class="sidebar-item-icon">📌</span>
+              <span class="sidebar-item-icon">${icons.pinned}</span>
               <span class="sidebar-item-label">Pinned</span>
               ${counts.pinned > 0 ? `<span class="sidebar-item-count sidebar-item-count--pinned">${counts.pinned}</span>` : ''}
             </button>
             <button class="sidebar-menu-item ${this.panelCategory === 'inbox' || (!this.panelCategory && counts.today === 0) ? 'active' : ''}" data-cat="inbox">
-              <span class="sidebar-item-icon">📥</span>
+              <span class="sidebar-item-icon">${icons.inbox}</span>
               <span class="sidebar-item-label">All Tasks</span>
               ${counts.inbox > 0 ? `<span class="sidebar-item-count">${counts.inbox}</span>` : ''}
             </button>
             <button class="sidebar-menu-item ${this.panelCategory === 'completed' ? 'active' : ''}" data-cat="completed">
-              <span class="sidebar-item-icon">✓</span>
+              <span class="sidebar-item-icon">${icons.completed}</span>
               <span class="sidebar-item-label">Completed</span>
               ${counts.completed > 0 ? `<span class="sidebar-item-count">${counts.completed}</span>` : ''}
             </button>
             <button class="sidebar-menu-item ${this.panelCategory === 'trash' ? 'active' : ''}" data-cat="trash">
-              <span class="sidebar-item-icon">🗑️</span>
+              <span class="sidebar-item-icon">${icons.trash}</span>
               <span class="sidebar-item-label">Trash</span>
               ${counts.trash > 0 ? `<span class="sidebar-item-count sidebar-item-count--red">${counts.trash}</span>` : ''}
             </button>
@@ -1338,7 +1347,7 @@ const TasksComponent = {
           <div class="panel-content-body">
             ${displayTasks.length === 0 ? `
               <div class="panel-empty-inbox">
-                <div class="inbox-graphic-icon">${isTrashMode ? '🗑️' : '📥'}</div>
+                <div class="inbox-graphic-icon">${isTrashMode ? icons.trash : icons.inbox}</div>
                 <p>${isTrashMode ? 'Trash is empty' : `No tasks in ${categoryTitle}`}</p>
                 ${!isTrashMode ? `<p style="font-size:0.78rem;opacity:0.5">Use the form below or right-click the workspace</p>` : ''}
               </div>` : `
@@ -1367,14 +1376,14 @@ const TasksComponent = {
                     <div class="panel-task-info">
                       <div class="panel-task-title-line">
                         <span class="panel-task-text">${Utils.escapeHtml(t.title)}</span>
-                        ${t.pinned !== false ? '<span class="panel-pinned-badge" title="Pinned to desktop screen">📌</span>' : ''}
+                        ${t.pinned !== false ? `<span class="panel-pinned-badge" title="Pinned to desktop screen"><svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg></span>` : ''}
                       </div>
                       ${(t.description && t.description.trim()) ? `<span class="panel-task-desc">${Utils.escapeHtml(t.description.trim().slice(0, 55))}${t.description.trim().length > 55 ? '…' : ''}</span>` : ''}
                       ${(() => {
                         if (!t.dueDate && !t.dueTime) return '';
                         const ts = this._getTaskRemainingTime(t);
                         const info = this._getRemainingTimeInfo(ts);
-                        return `<span class="panel-task-due ${info?.isOverdue ? 'overdue' : ''}">⏰ ${t.dueDate || 'Today'}${t.dueTime ? ' ' + t.dueTime : ''}${info ? ` • ${info.text}` : ''}</span>`;
+                        return `<span class="panel-task-due ${info?.isOverdue ? 'overdue' : ''}"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block;vertical-align:-1px;margin-right:3px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${t.dueDate || 'Today'}${t.dueTime ? ' ' + t.dueTime : ''}${info ? ` • ${info.text}` : ''}</span>`;
                       })()}
                     </div>
                     ${t.priority === 'high' || t.priority === 'critical' ? '<span class="task-priority-dot priority-high"></span>' : ''}
