@@ -34,22 +34,23 @@ const NotesComponent = {
 
   bindLauncherButton() {
     let launcher = document.getElementById('notes-widget-launcher');
+    let widgetsContainer = document.getElementById('bottom-right-widgets');
     if (!launcher) {
       launcher = document.createElement('button');
       launcher.id = 'notes-widget-launcher';
-      launcher.className = 'notes-widget-launcher';
+      launcher.className = 'widget-launcher-btn notes-widget-launcher';
       launcher.title = 'Toggle Notes Box (Press N)';
-      document.body.appendChild(launcher);
+      if (widgetsContainer) {
+        widgetsContainer.prepend(launcher);
+      } else {
+        document.body.appendChild(launcher);
+      }
+    } else if (widgetsContainer && launcher.parentElement !== widgetsContainer) {
+      widgetsContainer.prepend(launcher);
     }
     this.updateLauncherBadge();
 
     launcher.addEventListener('click', (e) => {
-      e.stopPropagation();
-      // Direct action: Create/Pin new note directly on canvas without opening floating panel box
-      this.addNote({ title: 'New Note', color: 'yellow', pinned: true });
-    });
-    launcher.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
       e.stopPropagation();
       this.togglePanelBox();
     });

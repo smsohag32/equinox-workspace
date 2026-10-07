@@ -271,7 +271,7 @@ const TasksComponent = {
 
     const x = posX !== undefined ? posX : (task.x !== undefined ? task.x : Math.min(window.innerWidth - 320, 28 + (index * 20)));
     const y = posY !== undefined ? posY : (task.y !== undefined ? task.y : Math.min(window.innerHeight - 120, 95 + (index * 95)));
-    const widthStyle = posW ? `width: ${posW}px;` : (task.width ? `width: ${task.width}px;` : 'width: fit-content; max-width: 380px; min-width: 220px;');
+    const widthStyle = posW ? `width: ${posW}px;` : (task.width ? `width: ${task.width}px;` : 'width: fit-content; min-width: 240px;');
     const heightStyle = posH ? `height: ${posH}px;` : (task.height ? `height: ${task.height}px;` : '');
 
     const stylePos = `style="position: fixed; left: ${x}px; top: ${y}px; z-index: 60; ${widthStyle} ${heightStyle}"`;
@@ -1144,7 +1144,11 @@ const TasksComponent = {
   /* ========== FLOATING TASK PANEL WIDGET (SIDEBAR & INBOX) ========== */
   bindLauncherButton() {
     const launcher = document.getElementById('tasks-widget-launcher');
+    const widgetsContainer = document.getElementById('bottom-right-widgets');
     if (launcher) {
+      if (widgetsContainer && launcher.parentElement !== widgetsContainer) {
+        widgetsContainer.appendChild(launcher);
+      }
       launcher.addEventListener('click', () => this.togglePanelBox());
     }
   },
