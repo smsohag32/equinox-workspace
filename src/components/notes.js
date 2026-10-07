@@ -185,7 +185,7 @@ const NotesComponent = {
                 <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"></path>
                 <polyline points="14 2 14 8 20 8"></polyline>
               </svg>
-              <span class="sidebar-title">Sticky Notes</span>
+              <span class="sidebar-title">Notes</span>
             </div>
             <button class="panel-action-icon-btn" id="notes-sidebar-add-btn" title="Create New Note">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -318,7 +318,7 @@ const NotesComponent = {
                   </div>
                 `).join('')}
               </div>`
-            }
+      }
           </div>
 
           <footer class="panel-footer">
