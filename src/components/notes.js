@@ -510,27 +510,30 @@ const NotesComponent = {
   _renderNoteHTML(note) {
     const color = note.color || 'yellow';
     const isSynced = this.googleUser && this.googleUser.signedIn;
-    const stylePos = `style="position: fixed; left: ${note.x}px; top: ${note.y}px; z-index: 65; width: ${note.width || 300}px; height: ${note.height || 260}px;"`;
+    const stylePos = `style="position: fixed; left: ${note.x}px; top: ${note.y}px; z-index: 65; width: ${note.width || 320}px; height: ${note.height || 270}px;"`;
+
+    const contentText = (note.content || '').trim();
+    const wordCount = contentText ? contentText.split(/\s+/).length : 0;
+    const wordCountText = wordCount > 0 ? `${wordCount} word${wordCount === 1 ? '' : 's'}` : 'Empty note';
 
     return `
       <div class="sticky-note-card note-theme-${color}" data-id="${note.id}" ${stylePos}>
         <div class="note-header">
-          <div class="note-drag-handle" title="Drag sticky note anywhere on full window canvas">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="8" cy="7" r="1.2" fill="currentColor"/>
-              <circle cx="16" cy="7" r="1.2" fill="currentColor"/>
-              <circle cx="8" cy="14" r="1.2" fill="currentColor"/>
-              <circle cx="16" cy="14" r="1.2" fill="currentColor"/>
+          <div class="note-drag-handle" title="Drag sticky note anywhere on window canvas">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="9" cy="5" r="1.5"/><circle cx="15" cy="5" r="1.5"/>
+              <circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/>
+              <circle cx="9" cy="19" r="1.5"/><circle cx="15" cy="19" r="1.5"/>
             </svg>
           </div>
 
           <!-- Color palette picker -->
           <div class="note-color-picker">
-            <button class="color-dot dot-yellow ${color === 'yellow' ? 'active' : ''}" data-color="yellow" title="Yellow"></button>
-            <button class="color-dot dot-mint ${color === 'mint' ? 'active' : ''}" data-color="mint" title="Mint"></button>
-            <button class="color-dot dot-cyan ${color === 'cyan' ? 'active' : ''}" data-color="cyan" title="Cyan"></button>
-            <button class="color-dot dot-pink ${color === 'pink' ? 'active' : ''}" data-color="pink" title="Pink"></button>
-            <button class="color-dot dot-purple ${color === 'purple' ? 'active' : ''}" data-color="purple" title="Purple"></button>
+            <button class="color-dot dot-yellow ${color === 'yellow' ? 'active' : ''}" data-color="yellow" title="Yellow Accent"></button>
+            <button class="color-dot dot-mint ${color === 'mint' ? 'active' : ''}" data-color="mint" title="Mint Accent"></button>
+            <button class="color-dot dot-cyan ${color === 'cyan' ? 'active' : ''}" data-color="cyan" title="Cyan Accent"></button>
+            <button class="color-dot dot-pink ${color === 'pink' ? 'active' : ''}" data-color="pink" title="Pink Accent"></button>
+            <button class="color-dot dot-purple ${color === 'purple' ? 'active' : ''}" data-color="purple" title="Purple Accent"></button>
           </div>
 
           <div class="note-header-actions">
@@ -543,15 +546,26 @@ const NotesComponent = {
               </svg>
             </span>
 
-            <button class="btn-icon note-btn-add" data-naction="add" title="New Note (+)">+</button>
-            <button class="btn-icon note-btn-dock" data-naction="dock" title="Dock back into Floating Notes Box">📥</button>
-            <button class="btn-icon note-btn-del" data-naction="delete" title="Delete Note">✕</button>
+            <button class="note-hdr-btn note-btn-add" data-naction="add" title="Create New Sticky Note">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+            <button class="note-hdr-btn note-btn-dock" data-naction="dock" title="Dock back into Floating Notes Box">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+            <button class="note-hdr-btn note-btn-del" data-naction="delete" title="Move Note to Trash">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
           </div>
         </div>
 
         <div class="note-body">
           <input type="text" class="note-title-input" value="${Utils.escapeHtml(note.title)}" placeholder="Note Title…" data-id="${note.id}">
           <textarea class="note-content-input" placeholder="Type thoughts or details…" data-id="${note.id}">${Utils.escapeHtml(note.content || '')}</textarea>
+        </div>
+
+        <div class="note-card-footer">
+          <span class="note-word-count" id="note-word-count-${note.id}">${wordCountText}</span>
+          <span class="note-save-badge">✓ Saved</span>
         </div>
       </div>
     `;
@@ -688,7 +702,16 @@ const NotesComponent = {
       }
 
       const contentInput = card.querySelector('.note-content-input');
+      const wordCountEl = card.querySelector(`#note-word-count-${id}`);
       if (contentInput) {
+        contentInput.addEventListener('input', () => {
+          const txt = contentInput.value.trim();
+          const wc = txt ? txt.split(/\s+/).length : 0;
+          if (wordCountEl) {
+            wordCountEl.textContent = wc > 0 ? `${wc} word${wc === 1 ? '' : 's'}` : 'Empty note';
+          }
+        });
+
         contentInput.addEventListener('input', Utils.debounce(async () => {
           this.notes = await StorageManager.updateNote(id, { content: contentInput.value });
           if (this.isPanelOpen) this.renderPanelBox();
