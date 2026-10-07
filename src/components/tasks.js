@@ -1154,10 +1154,25 @@ const TasksComponent = {
   },
 
   updateLauncherBadge() {
-    const badge = document.getElementById('launcher-badge');
-    if (!badge) return;
+    const launcher = document.getElementById('tasks-widget-launcher');
+    if (!launcher) return;
     const activeCount = this.tasks.filter(t => !t.completed).length;
-    badge.textContent = activeCount > 0 ? activeCount : '✓';
+    launcher.classList.toggle('active', this.isPanelOpen);
+    launcher.title = `Task Manager — ${activeCount} active task${activeCount === 1 ? '' : 's'} (Alt+T / Ctrl+Shift+T)`;
+
+    let badge = launcher.querySelector('.badge-tasks');
+    if (!badge) {
+      launcher.innerHTML = `
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"></path>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+        </svg>
+        <span class="launcher-label">Tasks</span>
+        <span class="widget-badge badge-tasks" id="tasks-launcher-badge">${activeCount}</span>
+      `;
+    } else {
+      badge.textContent = activeCount;
+    }
   },
 
   togglePanelBox() {
@@ -1170,11 +1185,13 @@ const TasksComponent = {
 
   openPanelBox() {
     this.isPanelOpen = true;
+    this.updateLauncherBadge();
     this.renderPanelBox();
   },
 
   closePanelBox() {
     this.isPanelOpen = false;
+    this.updateLauncherBadge();
     const panel = document.getElementById('tasks-floating-panel');
     if (panel) {
       if (panel._outsideHandler) {
@@ -1403,6 +1420,10 @@ const TasksComponent = {
     `;
 
     requestAnimationFrame(() => panel.classList.add('active'));
+
+    if (typeof WidgetDockManager !== 'undefined') {
+      WidgetDockManager.makePanelDraggable(panel, 'devora_tasks_panel_pos');
+    }
 
     // Outside-click to close
     if (panel._outsideHandler) {

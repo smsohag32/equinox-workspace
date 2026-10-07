@@ -19,6 +19,7 @@ const DevoraApp = {
       GreetingComponent.init(),
       ClockComponent.init(),
       SearchComponent.init(),
+      typeof WidgetDockManager !== 'undefined' ? WidgetDockManager.init() : Promise.resolve(),
       TasksComponent.init(),
       NotesComponent.init(),
       QuickLinksComponent.init(),
@@ -83,11 +84,19 @@ const DevoraApp = {
       // Don't trigger shortcuts when typing in input fields
       const isInput = e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable;
 
-      // Escape — close any modal or settings
+      // Escape — close any modal, panel or settings
       if (e.key === 'Escape') {
         const modal = document.getElementById('modal-overlay');
         if (modal && modal.classList.contains('active')) {
           TasksComponent.closeModal();
+          return;
+        }
+        if (typeof NotesComponent !== 'undefined' && NotesComponent.isPanelOpen) {
+          NotesComponent.closePanelBox();
+          return;
+        }
+        if (typeof TasksComponent !== 'undefined' && TasksComponent.isPanelOpen) {
+          TasksComponent.closePanelBox();
           return;
         }
         if (SettingsComponent.isOpen) {
@@ -97,6 +106,20 @@ const DevoraApp = {
       }
 
       if (isInput) return;
+
+      // Shortcut: Alt+N or Ctrl+Shift+N -> Toggle Notes Panel
+      if ((e.altKey || (e.ctrlKey && e.shiftKey) || (e.metaKey && e.shiftKey)) && e.key.toLowerCase() === 'n') {
+        e.preventDefault();
+        if (typeof NotesComponent !== 'undefined') NotesComponent.togglePanelBox();
+        return;
+      }
+
+      // Shortcut: Alt+T or Ctrl+Shift+T -> Toggle Tasks Panel
+      if ((e.altKey || (e.ctrlKey && e.shiftKey) || (e.metaKey && e.shiftKey)) && e.key.toLowerCase() === 't') {
+        e.preventDefault();
+        if (typeof TasksComponent !== 'undefined') TasksComponent.togglePanelBox();
+        return;
+      }
 
       // '/' — Focus search
       if (e.key === '/') {

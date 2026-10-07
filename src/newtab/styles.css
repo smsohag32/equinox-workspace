@@ -3657,8 +3657,44 @@ body.custom-bg-active .quicklink {
   z-index: var(--z-header);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  padding: 6px 10px;
+  background: rgba(11, 18, 33, 0.88);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.1);
   pointer-events: auto;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  user-select: none;
+}
+
+.bottom-right-widgets.is-dragging {
+  cursor: grabbing !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 30px rgba(56, 189, 248, 0.35);
+  border-color: rgba(56, 189, 248, 0.7);
+  transform: scale(1.02);
+}
+
+.dock-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 4px;
+  color: rgba(255, 255, 255, 0.45);
+  cursor: grab;
+  border-radius: 12px;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.dock-drag-handle:hover {
+  color: #38bdf8;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dock-drag-handle:active {
+  cursor: grabbing;
 }
 
 .widget-launcher-btn,
@@ -3668,55 +3704,152 @@ body.custom-bg-active .quicklink {
   display: inline-flex !important;
   align-items: center !important;
   gap: 8px !important;
-  background: rgba(11, 18, 33, 0.92) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-  border: 1px solid rgba(56, 189, 248, 0.3) !important;
-  color: #ffffff !important;
-  padding: 8px 16px !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #f1f5f9 !important;
+  padding: 7px 15px !important;
   border-radius: 20px !important;
   font-size: 0.88rem !important;
   font-weight: 600 !important;
   cursor: pointer !important;
   user-select: none !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 15px rgba(56, 189, 248, 0.12) !important;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .widget-launcher-btn:hover,
 .tasks-widget-launcher:hover,
 .notes-widget-launcher:hover {
-  background: rgba(18, 28, 50, 0.96) !important;
-  border-color: rgba(56, 189, 248, 0.65) !important;
+  background: rgba(56, 189, 248, 0.15) !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
   color: #ffffff !important;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 24px rgba(56, 189, 248, 0.28) !important;
-  transform: translateY(-2px) scale(1.03) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 16px rgba(56, 189, 248, 0.25) !important;
+  transform: translateY(-2px) scale(1.02) !important;
 }
 
-.widget-launcher-btn svg,
-.tasks-widget-launcher svg,
-.notes-widget-launcher svg {
+.widget-launcher-btn.active,
+.notes-widget-launcher.active {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.25), rgba(2, 132, 199, 0.35)) !important;
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.4) !important;
+}
+
+.tasks-widget-launcher.active {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(79, 70, 229, 0.35)) !important;
+  border-color: #818cf8 !important;
+  box-shadow: 0 0 18px rgba(99, 102, 241, 0.4) !important;
+}
+
+.widget-launcher-btn svg {
   stroke: #38bdf8 !important;
   color: #38bdf8 !important;
   flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
 
-.launcher-badge,
-.notes-launcher-badge {
-  display: none !important;
-}
-  box-shadow: 0 12px 32px rgba(0,0,0,0.5), 0 0 25px rgba(var(--accent-primary-rgb), 0.25);
-  transform: translateY(-2px);
+.tasks-widget-launcher svg {
+  stroke: #818cf8 !important;
+  color: #818cf8 !important;
 }
 
-.launcher-badge {
-  font-size: 0.78rem;
-  font-weight: 700;
-  background: var(--accent-primary);
-  color: #fff;
-  padding: 2px 7px;
-  border-radius: 10px;
-  line-height: 1;
+.widget-launcher-btn:hover svg {
+  transform: scale(1.1);
+}
+
+.widget-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  min-width: 20px !important;
+  height: 20px !important;
+  padding: 0 6px !important;
+  border-radius: 10px !important;
+  line-height: 1 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.badge-notes {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7) !important;
+}
+
+.badge-tasks {
+  background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+}
+
+/* Panel Header Drag Handle */
+.panel-draggable-header {
+  cursor: grab !important;
+  position: relative;
+  user-select: none;
+}
+
+.panel-draggable-header:active {
+  cursor: grabbing !important;
+}
+
+.panel-header-drag-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.35);
+  margin-right: 6px;
+  cursor: grab;
+  transition: color 0.2s ease;
+}
+
+.panel-draggable-header:hover .panel-header-drag-icon {
+  color: #38bdf8;
+}
+
+/* Dock Context Menu */
+.widget-dock-context-menu {
+  position: fixed;
+  z-index: 10000;
+  min-width: 210px;
+  padding: 6px;
+  background: rgba(11, 18, 33, 0.96);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.15);
+  animation: contextMenuPop 0.18s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes contextMenuPop {
+  from { opacity: 0; transform: scale(0.95) translateY(-4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.dock-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  color: #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.dock-menu-item:hover {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+
+.dock-menu-item svg {
+  stroke: #38bdf8;
+  flex-shrink: 0;
+}
+
+.dock-menu-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 4px 0;
 }
 
 /* ============================================================
@@ -4859,43 +4992,7 @@ body.custom-bg-active .quicklink {
   opacity: 0.95;
 }
 
-/* Floating Sticky Notes Launcher Button (Bottom-Left) */
-.notes-widget-launcher {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  z-index: var(--z-header);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--bg-glass-solid);
-  backdrop-filter: blur(24px);
-  border: 1px solid var(--border-primary);
-  color: var(--text-primary);
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 15px rgba(var(--accent-primary-rgb), 0.12);
-  transition: all var(--t-base) var(--ease-out);
-}
 
-.notes-widget-launcher:hover {
-  border-color: var(--accent-primary);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.5), 0 0 25px rgba(var(--accent-primary-rgb), 0.3);
-  transform: translateY(-2px);
-}
-
-.notes-launcher-badge {
-  font-size: 0.78rem;
-  font-weight: 700;
-  background: var(--accent-primary);
-  color: #fff;
-  padding: 2px 7px;
-  border-radius: 10px;
-  line-height: 1;
-}
 
 /* ============================================================
    Responsive Settings Drawer & Google Sync UI

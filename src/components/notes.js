@@ -59,13 +59,23 @@ const NotesComponent = {
   updateLauncherBadge() {
     const launcher = document.getElementById('notes-widget-launcher');
     if (!launcher) return;
-    launcher.innerHTML = `
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"></path>
-        <polyline points="14 2 14 8 20 8"></polyline>
-      </svg>
-      <span>Notes</span>
-    `;
+    const activeCount = this.notes.length;
+    launcher.classList.toggle('active', this.isPanelOpen);
+    launcher.title = `Sticky Notes — ${activeCount} note${activeCount === 1 ? '' : 's'} (Alt+N / Ctrl+Shift+N)`;
+
+    let badge = launcher.querySelector('.badge-notes');
+    if (!badge) {
+      launcher.innerHTML = `
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+        </svg>
+        <span>Notes</span>
+        <span class="widget-badge badge-notes" id="notes-launcher-badge">${activeCount}</span>
+      `;
+    } else {
+      badge.textContent = activeCount;
+    }
   },
 
   togglePanelBox() {
@@ -78,11 +88,13 @@ const NotesComponent = {
 
   openPanelBox() {
     this.isPanelOpen = true;
+    this.updateLauncherBadge();
     this.renderPanelBox();
   },
 
   closePanelBox() {
     this.isPanelOpen = false;
+    this.updateLauncherBadge();
     const panel = document.getElementById('notes-floating-panel');
     if (panel) {
       // Clean up outside-click handler
@@ -334,6 +346,10 @@ const NotesComponent = {
     `;
 
     requestAnimationFrame(() => panel.classList.add('active'));
+
+    if (typeof WidgetDockManager !== 'undefined') {
+      WidgetDockManager.makePanelDraggable(panel, 'devora_notes_panel_pos');
+    }
 
     // Outside-click handler: close panel when clicking outside panel and launcher
     if (panel._outsideHandler) {
