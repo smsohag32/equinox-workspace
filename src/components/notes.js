@@ -39,7 +39,7 @@ const NotesComponent = {
       launcher = document.createElement('button');
       launcher.id = 'notes-widget-launcher';
       launcher.className = 'widget-launcher-btn notes-widget-launcher';
-      launcher.title = 'Create Sticky Note (Press N)';
+      launcher.title = 'Toggle Floating All Notes Box';
       if (widgetsContainer) {
         widgetsContainer.prepend(launcher);
       } else {
@@ -52,8 +52,7 @@ const NotesComponent = {
 
     launcher.addEventListener('click', (e) => {
       e.stopPropagation();
-      // Direct action: Add new sticky note directly on screen without opening the floating box panel
-      this.addNote({ title: 'New Note', color: 'yellow', pinned: true });
+      this.togglePanelBox();
     });
   },
 
