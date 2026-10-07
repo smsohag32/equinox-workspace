@@ -22,12 +22,15 @@ const ClockComponent = {
     const now = new Date();
     const clockSettings = this.settings?.clock || {};
 
+    const format24 = clockSettings.format24 === true;
+    const showSeconds = clockSettings.showSeconds === true;
+
     // Time
     if (this.clockEl) {
       this.clockEl.textContent = Utils.formatTime(
         now,
-        clockSettings.format24 !== false,
-        clockSettings.showSeconds !== false
+        format24,
+        showSeconds
       );
     }
 

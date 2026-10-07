@@ -236,14 +236,14 @@ const SettingsComponent = {
           <div class="settings-option">
             <label>Time Format</label>
             <div class="settings-toggle-group">
-              <button class="toggle-option ${s.clock?.format24 ? 'active' : ''}" data-setting="clock.format24" data-value="true">24-hour</button>
-              <button class="toggle-option ${!s.clock?.format24 ? 'active' : ''}" data-setting="clock.format24" data-value="false">12-hour</button>
+              <button class="toggle-option ${s.clock?.format24 === true ? 'active' : ''}" data-setting="clock.format24" data-value="true">24-hour</button>
+              <button class="toggle-option ${s.clock?.format24 !== true ? 'active' : ''}" data-setting="clock.format24" data-value="false">12-hour</button>
             </div>
           </div>
           <div class="settings-option">
             <label>Show Seconds</label>
             <label class="switch">
-              <input type="checkbox" id="settings-show-seconds" ${s.clock?.showSeconds !== false ? 'checked' : ''} data-setting="clock.showSeconds">
+              <input type="checkbox" id="settings-show-seconds" ${s.clock?.showSeconds === true ? 'checked' : ''} data-setting="clock.showSeconds">
               <span class="switch-slider"></span>
             </label>
           </div>

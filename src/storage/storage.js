@@ -11,8 +11,8 @@ const StorageManager = {
       return (typeof CONFIG !== 'undefined' && CONFIG.DEFAULTS) ? CONFIG.DEFAULTS : {
         theme: 'dark',
         clock: {
-          format24: true,
-          showSeconds: true,
+          format24: false,
+          showSeconds: false,
           showDate: true
         },
         background: {

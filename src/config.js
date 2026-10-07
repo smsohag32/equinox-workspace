@@ -34,8 +34,8 @@ const CONFIG = {
          name: "Developer",
       },
       clock: {
-         format24: true,
-         showSeconds: true,
+         format24: false,
+         showSeconds: false,
          showDate: true,
       },
       search: {},

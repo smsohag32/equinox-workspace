@@ -24,7 +24,7 @@ const Utils = {
     };
   },
 
-  formatTime(date, format24 = true, showSeconds = true) {
+  formatTime(date, format24 = false, showSeconds = false) {
     const d = date || new Date();
     let hours = d.getHours();
     const minutes = String(d.getMinutes()).padStart(2, '0');
@@ -36,7 +36,7 @@ const Utils = {
       hours = hours % 12 || 12;
     }
 
-    const h = String(hours).padStart(2, '0');
+    const h = format24 ? String(hours).padStart(2, '0') : String(hours);
     const time = showSeconds ? `${h}:${minutes}:${seconds}` : `${h}:${minutes}`;
     return time + period;
   },
