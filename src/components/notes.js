@@ -135,6 +135,7 @@ const NotesComponent = {
     }
 
     const trashNotes = await StorageManager.getTrashNotes();
+    const isTrashMode = this.panelCategory === 'trash';
     const colorCounts = {
       all: this.notes.length,
       yellow: this.notes.filter(n => (n.color || 'yellow') === 'yellow').length,

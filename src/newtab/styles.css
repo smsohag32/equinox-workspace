@@ -3726,10 +3726,11 @@ body.custom-bg-active .quicklink {
 .notes-floating-panel {
   position: fixed;
   bottom: 72px;
-  width: 720px;
+  width: calc(48vw - 16px);
+  min-width: 360px;
+  max-width: 720px;
   height: 590px;
-  max-width: min(720px, calc(100vw - 32px));
-  max-height: min(590px, calc(100vh - 90px));
+  max-height: calc(100vh - 90px);
   background: var(--bg-glass-solid);
   backdrop-filter: blur(40px) saturate(1.4);
   -webkit-backdrop-filter: blur(40px) saturate(1.4);
@@ -3750,8 +3751,8 @@ body.custom-bg-active .quicklink {
   flex-direction: column;
 }
 
-.tasks-floating-panel { right: 20px; }
-.notes-floating-panel { left: 20px; }
+.tasks-floating-panel { right: 20px; left: auto; }
+.notes-floating-panel { left: 20px; right: auto; }
 
 .tasks-floating-panel.active,
 .notes-floating-panel.active {
