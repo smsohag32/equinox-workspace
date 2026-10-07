@@ -81,10 +81,14 @@ const PomodoroComponent = {
   },
 
   _modeConfig() {
+    const focusSvg = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`;
+    const breakSvg = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>`;
+    const longSvg  = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>`;
+
     const cfg = {
-      work:      { label:'Focus',       emoji:'🎯', gradStart:'#6366f1', gradEnd:'#818cf8' },
-      break:     { label:'Short Break', emoji:'☕', gradStart:'#10b981', gradEnd:'#34d399' },
-      longBreak: { label:'Long Break',  emoji:'🌿', gradStart:'#22d3ee', gradEnd:'#67e8f9' }
+      work:      { label:'Focus',       icon: focusSvg, emoji:'🎯', gradStart:'#6366f1', gradEnd:'#818cf8' },
+      break:     { label:'Short Break', icon: breakSvg, emoji:'☕', gradStart:'#10b981', gradEnd:'#34d399' },
+      longBreak: { label:'Long Break',  icon: longSvg,  emoji:'🌿', gradStart:'#22d3ee', gradEnd:'#67e8f9' }
     };
     return cfg[this.state.mode] || cfg.work;
   },
@@ -104,12 +108,15 @@ const PomodoroComponent = {
     const dots = Array.from({length:4}, (_,i) =>
       `<span class="pomo-dot ${i < sessInCycle ? 'done' : ''}" title="Session ${i+1}"></span>`
     ).join('');
-    const miniEmoji = mode === 'work' ? '🎯' : mode === 'break' ? '☕' : '🌿';
+
+    const focusSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`;
+    const breakSvg = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>`;
+    const longSvg  = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>`;
 
     this.container.innerHTML = `
       <div class="pomo-widget ${isRunning ? 'running' : ''} mode-${mode}" id="pomo-root">
         <button class="pomo-pill" id="pomo-pill" title="Focus Timer (Space = play/pause)">
-          <span class="pomo-pill-icon">${miniEmoji}</span>
+          <span class="pomo-pill-icon">${cfg.icon}</span>
           <span class="pomo-pill-time">${this._formatTime(timeRemaining)}</span>
           ${isRunning ? '<span class="pomo-pill-pulse"></span>' : ''}
         </button>
@@ -118,7 +125,7 @@ const PomodoroComponent = {
         <div class="pomo-panel" id="pomo-panel">
           <div class="pomo-panel-header">
             <div class="pomo-panel-title">
-              <span class="pomo-panel-badge">${cfg.label}</span>
+              <span class="pomo-panel-badge">${cfg.icon}<span>${cfg.label}</span></span>
             </div>
             <button class="pomo-panel-close" id="pomo-close" title="Close Focus Box (Esc)">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -130,21 +137,21 @@ const PomodoroComponent = {
 
           <div class="pomo-tabs">
             <button class="pomo-tab ${mode==='work'?'active':''}" data-mode="work" title="25m Focus Session">
-              <span class="pomo-tab-emoji">🎯</span>
+              <span class="pomo-tab-svg">${focusSvg}</span>
               <span class="pomo-tab-text">Focus</span>
             </button>
             <button class="pomo-tab ${mode==='break'?'active':''}" data-mode="break" title="5m Short Break">
-              <span class="pomo-tab-emoji">☕</span>
+              <span class="pomo-tab-svg">${breakSvg}</span>
               <span class="pomo-tab-text">Break</span>
             </button>
             <button class="pomo-tab ${mode==='longBreak'?'active':''}" data-mode="longBreak" title="15m Long Break">
-              <span class="pomo-tab-emoji">🌿</span>
+              <span class="pomo-tab-svg">${longSvg}</span>
               <span class="pomo-tab-text">Long</span>
             </button>
           </div>
 
           <div class="pomo-ring-wrap">
-            <svg class="pomo-ring" viewBox="0 0 144 144" width="186" height="186">
+            <svg class="pomo-ring" viewBox="0 0 144 144" width="190" height="190">
               <defs>
                 <linearGradient id="pomoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stop-color="${cfg.gradStart}"/>
@@ -160,10 +167,10 @@ const PomodoroComponent = {
                 stroke-dashoffset="${dash.toFixed(2)}"
                 transform="rotate(-90 72 72)"
                 class="pomo-ring-arc"
-                style="filter:drop-shadow(0 0 10px ${cfg.gradStart}99);transition:stroke-dashoffset 1s linear;"/>
+                style="filter:drop-shadow(0 0 12px ${cfg.gradStart}bb);transition:stroke-dashoffset 1s linear;"/>
             </svg>
             <div class="pomo-ring-center">
-              <div class="pomo-ring-emoji">${cfg.emoji}</div>
+              <div class="pomo-ring-badge-icon">${cfg.icon}</div>
               <div class="pomo-ring-time" id="pomo-display-time">${this._formatTime(timeRemaining)}</div>
               <div class="pomo-ring-label">${cfg.label}</div>
             </div>
@@ -171,31 +178,31 @@ const PomodoroComponent = {
 
           <div class="pomo-task-wrap">
             <div class="pomo-task-input-box">
-              <svg class="pomo-task-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 14 14"></polyline>
+              <svg class="pomo-task-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
               </svg>
               <input class="pomo-task-input" id="pomo-task-input" type="text"
                 maxlength="50" placeholder="What are you focusing on?"
                 value="${(taskLabel||'').replace(/"/g,'&quot;')}" />
               ${taskLabel ? `
-                <button class="pomo-task-clear-btn" id="pomo-task-clear" title="Clear task">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <button class="pomo-task-clear-btn" id="pomo-task-clear" title="Clear task label">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </button>` : ''}
             </div>
           </div>
 
           <div class="pomo-controls">
             <button class="pomo-icon-btn" id="pomo-reset" title="Reset Session (R)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg>
             </button>
             <button class="pomo-main-btn ${isRunning?'pause':'play'}" id="pomo-playpause" title="${isRunning?'Pause (Space)':'Start Focus (Space)'}">
               ${isRunning
-                ? `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`
-                : `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin-left:2px;"><polygon points="6 3 20 12 6 21 6 3"/></svg>`}
+                ? `<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1.5"/><rect x="14" y="4" width="4" height="16" rx="1.5"/></svg>`
+                : `<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="margin-left:3px;"><polygon points="6 3 20 12 6 21 6 3"/></svg>`}
             </button>
             <button class="pomo-icon-btn" id="pomo-skip" title="Skip to Next (S)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
             </button>
           </div>
 
@@ -207,17 +214,20 @@ const PomodoroComponent = {
 
           <div class="pomo-footer">
             <div class="pomo-focus-stat" title="Total focus time today">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
               <span>${this._formatFocusTotal(this._totalFocusToday)} today</span>
             </div>
             <div class="pomo-footer-btns">
               <button class="pomo-foot-btn ${this.soundOn?'on':''}" id="pomo-sound" title="${this.soundOn?'Sound on (ambient focus sound)':'Sound off'}">
                 ${this.soundOn
-                  ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg><span>Sound</span>`
-                  : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><span>Muted</span>`}
+                  ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg><span>Sound</span>`
+                  : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg><span>Muted</span>`}
               </button>
               <button class="pomo-foot-btn ${this.state.autoStart?'on':''}" id="pomo-auto" title="${this.state.autoStart?'Auto-start next session is ON':'Auto-start next session is OFF'}">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/><line x1="19" y1="3" x2="19" y2="21"/></svg>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/><line x1="19" y1="3" x2="19" y2="21"/></svg>
                 <span>Auto</span>
               </button>
             </div>
