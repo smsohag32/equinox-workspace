@@ -39,7 +39,7 @@ const NotesComponent = {
       launcher = document.createElement('button');
       launcher.id = 'notes-widget-launcher';
       launcher.className = 'widget-launcher-btn notes-widget-launcher';
-      launcher.title = 'Toggle Notes Box (Press N)';
+      launcher.title = 'Create Sticky Note (Press N)';
       if (widgetsContainer) {
         widgetsContainer.prepend(launcher);
       } else {
@@ -52,21 +52,20 @@ const NotesComponent = {
 
     launcher.addEventListener('click', (e) => {
       e.stopPropagation();
-      this.togglePanelBox();
+      // Direct action: Add new sticky note directly on screen without opening the floating box panel
+      this.addNote({ title: 'New Note', color: 'yellow', pinned: true });
     });
   },
 
   updateLauncherBadge() {
     const launcher = document.getElementById('notes-widget-launcher');
     if (!launcher) return;
-    const count = this.notes.length;
     launcher.innerHTML = `
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"></path>
         <polyline points="14 2 14 8 20 8"></polyline>
       </svg>
       <span>Notes</span>
-      <span class="notes-launcher-badge">${count}</span>
     `;
   },
 
