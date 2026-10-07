@@ -2343,13 +2343,13 @@ body.custom-bg-active .quicklink {
 .pomo-pill {
   display: flex;
   align-items: center;
-  gap: 8px;
-  height: 38px;
-  padding: 0 14px;
-  background: rgba(15, 23, 42, 0.72) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  gap: 7px;
+  height: 36px;
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
   border-radius: 10px !important;
   cursor: pointer;
@@ -2359,22 +2359,26 @@ body.custom-bg-active .quicklink {
   transition: all 0.2s var(--ease-out);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
 }
 .pomo-pill:hover {
-  border-color: rgba(var(--accent-primary-rgb, 99, 102, 241), 0.65) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
   color: #ffffff !important;
-  background: rgba(15, 23, 42, 0.88) !important;
-  transform: translateY(-1.5px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 16px rgba(var(--accent-primary-rgb, 99, 102, 241), 0.35) !important;
+  background: rgba(255, 255, 255, 0.22) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35) !important;
 }
 .pomo-pill-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent-primary, #818cf8) !important;
+  color: #ffffff !important;
   line-height: 1;
-  filter: drop-shadow(0 0 6px rgba(var(--accent-primary-rgb, 99, 102, 241), 0.6));
+}
+.pomo-pill-icon svg {
+  stroke: #ffffff !important;
+  color: #ffffff !important;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
 }
 .pomo-pill-time {
   color: #ffffff !important;
@@ -2387,22 +2391,22 @@ body.custom-bg-active .quicklink {
 }
 
 .pomo-widget.running .pomo-pill {
-  border-color: rgba(var(--accent-primary-rgb, 99, 102, 241), 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
   color: #ffffff !important;
-  background: rgba(var(--accent-primary-rgb, 99, 102, 241), 0.22) !important;
-  box-shadow: 0 0 20px rgba(var(--accent-primary-rgb, 99, 102, 241), 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.3) !important;
 }
 .pomo-widget.mode-break.running .pomo-pill {
-  border-color: rgba(var(--accent-green-rgb, 16, 185, 129), 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
   color: #ffffff !important;
-  background: rgba(var(--accent-green-rgb, 16, 185, 129), 0.22) !important;
-  box-shadow: 0 0 20px rgba(var(--accent-green-rgb, 16, 185, 129), 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.3) !important;
 }
 .pomo-widget.mode-longBreak.running .pomo-pill {
-  border-color: rgba(var(--accent-cyan-rgb, 34, 211, 238), 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
   color: #ffffff !important;
-  background: rgba(var(--accent-cyan-rgb, 34, 211, 238), 0.22) !important;
-  box-shadow: 0 0 20px rgba(var(--accent-cyan-rgb, 34, 211, 238), 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.3) !important;
 }
 
 .pomo-pill-pulse {
@@ -3148,33 +3152,33 @@ body.custom-bg-active .quicklink {
 #settings-btn {
   color: #ffffff !important;
   opacity: 1 !important;
-  background: rgba(15, 23, 42, 0.72) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
   border-radius: 10px !important;
-  width: 38px !important;
-  height: 38px !important;
+  width: 36px !important;
+  height: 36px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   transition: all 0.2s var(--ease-out) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
 }
 
 #settings-btn svg {
   stroke: #ffffff !important;
   color: #ffffff !important;
   fill: none !important;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6)) !important;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5)) !important;
 }
 
 #settings-btn:hover {
   color: #ffffff !important;
-  background: rgba(15, 23, 42, 0.88) !important;
+  background: rgba(255, 255, 255, 0.22) !important;
   border-color: rgba(255, 255, 255, 0.45) !important;
-  transform: translateY(-1.5px) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 14px rgba(255, 255, 255, 0.25) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35) !important;
 }
 
 /* ============================================================
