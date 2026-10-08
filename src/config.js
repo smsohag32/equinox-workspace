@@ -8,7 +8,7 @@ const CONFIG = {
    // Application Metadata
    APP: {
       NAME: "Equinox Workspace",
-      VERSION: "1.0.1",
+      VERSION: "1.0.2",
       REPOSITORY: "https://github.com/smsohag32/equinox-workspace",
       DESCRIPTION: "A premium, open-source productivity dashboard for modern developers.",
    },

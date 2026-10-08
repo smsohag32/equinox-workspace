@@ -11,7 +11,7 @@
       }
    },
    "name": "Equinox Workspace",
-   "version": "1.0.1",
+   "version": "1.0.2",
    "description": "A premium productivity-focused New Tab dashboard with clock, search, task manager, sticky notes, and quick links.",
    "icons": {
       "16": "assets/icons/icon16.png",

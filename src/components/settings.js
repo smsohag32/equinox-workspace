@@ -453,7 +453,7 @@ const SettingsComponent = {
           </h3>
           <div class="settings-about-header">
             <p><strong>Equinox Workspace</strong> — Ultimate Dashboard</p>
-            <p class="settings-version">Version 1.0.1</p>
+            <p class="settings-version">Version 1.0.2</p>
             <p class="settings-tagline">Your developer command center.</p>
           </div>
         </div>
